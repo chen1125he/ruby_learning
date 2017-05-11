@@ -1,0 +1,94 @@
+1.可以自己对类所对应的表命名
+	在module中
+	Class Product < ActiveRecode::Base
+		self.table_name = "PRODUCT"
+		
+		[self.primary_key = "product_id"]
+	end
+	如果自命名还要在测试中调用set_fixture_class方法？？
+	
+2.查询
+		(用find找不到目标会报异常)
+	1.Model.find(primary_key) 返回一个对象
+	2.Model.take 获取一个记录不考虑顺序,没有则返回空
+	3.Model.first/last 返回一个对象
+	4.Model.find_by property: value 返回一个对象
+	5.Model.find(array_of_primary_key[1,10]) 返回数组
+	6.Model.take(num)返回num个对象的数组
+	7.Model.first/last(num)
+	8.Model.where(['para1 = ? and param2 like ? and...', value1, value2...])
+	
+3.自联接，如都是雇员的经理和下属之间的联接，如何实现？
+	class Worker < ActiveRecode::Base
+	
+	end
+4.多态关联，如地址，公司会有地址，员工也会有地址来实现联接
+	class Address < ActiveRecode::Base
+		belongs_to :imageable, polymorphic: true
+	end
+	
+	class Person < ActiveRecode::Base
+		has_one :address, as: :imageable
+	end
+	有点乱，见model_test项目
+	class Image < Attachment
+	  belongs_to :owner, polymorphic: true
+	end
+	class User < ActiveRecord::Base
+	 has_one :image, as: :owner
+	end
+	create_table :attachments do |t|
+		  t.integer :owner_id
+		  t.string :owner_type
+		  ...
+	@user.includes(:image).take
+	
+5.has_and_belongs_to_many和has_many through
+	前者是要建立一个只有两个属性的外键表就可以，后者需要一个模型
+	相当于后者里有的属性除了二个外键属性的外还有其他的属性，这时候就用through
+	class physician < ActiveRecode::Base  #有第三个model
+		has_many :appointments
+		has_many :patient, :through => :appointments
+	end
+	
+	class Appointment < ActiveRecode::Base
+		belongs_to :physician
+		belongs_to :patient
+	end
+	
+	class Group < ActiveRecode::Base	#有第三张表
+		has_and_belongs_to_many :programmers
+	end
+	class Programmer < ActiveRecode::Base
+		has_and_belongs_to_many :groups
+	end
+	
+6.注意事项
+	
+    缓存控制(缓存共享、user.orders(true)可以重载缓存)
+    避免命名冲突(关联方法不能和ActiveRecode::Base中的实例方法相同)
+    更新模式
+    控制关联的作用域???
+    Bi-directional associations
+	\
+	
+	
+7.关联添加
+	多对多时如果添加的是表里没有的就会加一条记录@order.products << Product.new(:name => '黑色绽放')
+8.select的sql查询
+
+	products = Product.select(<<-EOF
+                              title, brands.name as brand_name, product_sales.size_name as size_name,
+                              orders.num as order_num
+                        EOF
+    ).joins(<<-EOF
+            LEFT JOIN brands ON brands.id = products.brand_id
+            LEFT JOIN product_sales on product_sales.product_id = products.id
+            LEFT JOIN orders ON product_sales.order_id = orders.id
+    EOF
+    ).where(id: 16)
+	对这个的方法有种奇怪的感觉
+		1.先是<<-EOF用来生成字符串，为什么这样做呢？有些不太明白，好处在哪？
+	奇怪的地方来了：2.现在直接输出product里面只有id和title这两个属性而且id是nil，product的其他属性就没有了而且点不出来
+					3.其他的表的属性值要取别名才能点出来
+					4.在一对多时的时候，会生成多个记录

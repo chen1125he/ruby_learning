@@ -1,0 +1,62 @@
+
+1.gem 'cancan'
+
+2.private
+	def current_ability
+		@current_ability ||= ::Ability.new(current_user)
+	end
+	
+3.Ability.rb
+
+	class Ability
+		include CanCan::Ability
+		# 所有的Model后省略了Controller
+		def initialize(user)
+			if user.blank?
+				can :read, Model # index,search,show
+			elsif user.admin? # 枚举
+				can :manage, Model # namage应该相当于所有的action
+				can :update, Model # update, edit
+				can :create, Model # new, create
+				can :delete, Model # destroy, delete
+				can [:action1, action2], Model
+				can :edit, Model, :user_id => user.id
+				# can :edit, Model do |model|
+				# 	topic.user_id == user.id
+				# end
+				# 允许查看model belongs_to的类
+				can :read, Model :category => {:visible => true}
+				my_authorize # 自定义权限
+			end
+		end	
+		
+		def my_authorize
+			can :read, Model
+			can :list, Model
+		end
+	end
+	
+4.load_and_authorize_resource 
+	相当于load_resource (这个相当于set_model之类的)
+	和authorize_resource (这个相当于对当前Controller做验证)
+	也可以用auhorize! :action, :model 来验证
+	
+5.can(not)?(:action, :controller)也可以用来验证，返回t/f
+
+6.initialize也可添加一些其他的参数，
+	initialize(user, request.remote_ip)
+	
+7.异常处理
+	# 这个应该加在authorize_resource的后面？
+	rescue_from CanCan::AccessDenied do |exception|
+		flash[:notice] = ''
+		redirect_to path  # :notice => exception.message
+	end
+	
+8.如果在一个action里面用到另一个类
+	class OneModelController < ..
+		authorize_resource :other_model
+	end
+	
+	Ability里面就写
+		can :read, OtherModel
