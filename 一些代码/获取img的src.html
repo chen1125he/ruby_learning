@@ -1,0 +1,26 @@
+<script src="jquery-1.8.3.js"></script>
+<script>
+	function fun(){
+		str = $("#text").html()
+		// 去掉换行对匹配的影响
+		while(/\n/gm.test(str)){
+			str=str.replace(/\n/gm,'')
+		}
+		while(/\<img.*?src=("|')(.*?)(\1).*?\/?\>/gm.test(str)){
+			// 取出一个串中第一个img中的src中的值
+			show_str=str.replace(/^.*?\<img.*?src=("|')(.*?)(\1).*?\/?\>.*$/, "$2")
+			$node = $("<span></span>")
+			$node.text(show_str)
+			$("<br />").appendTo($node)
+			$node.appendTo($("#text2"))
+			// 将已经取出值的img标签去掉，继续下一次循环
+			str = str.replace(/\<img.*?src=("|')(.*?)(\1).*?\/?\>/, '')
+		}
+	}
+</script>
+<span id="text">
+<p>
+<img alt="devil" src="/project/js/ckeditor/plugins/smiley/images/devil_smile.png" style="height:23px; width:23px" title="devil" /><img alt="surprise" src="/project/js/ckeditor/plugins/smiley/images/omg_smile.png" style="height:23px; width:23px" title="surprise" /></p>
+</span><br />
+<input type="button" value="运行" onclick="fun()"><br />
+<span id="text2"></span>

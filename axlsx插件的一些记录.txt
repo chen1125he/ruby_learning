@@ -1,0 +1,39 @@
+1.gem 'axlsx', '~> 2.0', '>= 2.0.1'
+1.5.若是用ajax提交form的方式，则要设置remote: true(详见随手记42条)
+2.在action中调用model中调用创建excel的方法
+	传回文件生成的路径
+	创建的方法主要包括
+	
+	新建一个Axlsx类
+	p = Axlsx::Package.new
+	
+	(p.use_autowidth = false)#还不明白是干嘛的
+	p.workbook do |wb|
+		styles = **.get_sheet_style(wb)
+		wb.styles.add_style(alignment:{vertical: :top/:center/:bottom}, sz: 30, fg_color: 'ff0000', border(_top/right): {style: :thin, color: 'ff0000'})  # sz:字体大小 fg_color:字体颜色
+		types = [:string, :string, :string, :string, :string, :string, :string, :string]
+		wb.add_worksheet(name: 'sheet_name') do |sheet|
+			sheet.add_row [], height: 25, style: style[:a_style]
+			sheet.add_row ['a', 'b'], height:25, style: style[:a_style, :b_style] # 这样子的话就是分别对第一列('a')和第二列('b')设置样式了,只写一个就是对整行设置了
+			sheet.merge_cells('A1:P1') # 从A1到P1合并， 是针对上面已经添加的row作的
+			sheet.merge_cells('Q1:S1') # 可以对一行写多个
+			sheet.merge_cells('A10:A11') # 这些写在什么地方似乎没有什么关系，是全局的
+			la = Axlsx.col_ref(title_names.length - 1) # 可以根据数字获取字母即横向坐标，能用于上面的合并
+			sheet.add_row [], types: types # 设置此行单元格的内容的样式
+		end
+	end
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+3.传回后通过放入js创建的表单中
+	再通过一个带send_file('file_path', filename: 'file_name')传回页面中

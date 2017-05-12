@@ -1,0 +1,6 @@
+1.查询是需要花时间的
+	减少查询时间可以建立索引
+	alert table table_name add [unique | fulltext | spatial ] index index_name (对应字段名 [(长度)] [ASC | DESC])
+	建立索引之后，sql不再一条条查询，而会直接根据where找索引
+	
+	

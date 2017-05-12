@@ -1,0 +1,5 @@
+ActiveModel::ForbiddenAttributesError错误有可能是因为进级到rails 4.0引起的，此时要将controller表单的提交设置在 ＠ad=Ad.new（params[:ad]）这句之前增长params.permit!这句话
+	params.permit!
+	ad=Ad.new（params[:ad]）
+	
+	在碰到这个问题的时候是做登录插件的时候，即使这个问题解决了也一直添加没成功，原因是没有加email

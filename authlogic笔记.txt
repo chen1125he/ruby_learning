@@ -1,0 +1,142 @@
+http://yuan.iteye.com/blog/646444
+1.创建urse model和users表
+create_table :users do |t|
+      t.string    :login,               :null => false                # 可选，可以用email来代替它，或者同时使用两者。
+      t.string    :email,               :null => false                # 可选，可以用login来代替它，或者同时使用两者。
+      t.string    :crypted_password,    :null => false                # 可选，但强烈建议加上。
+      t.string    :password_salt,       :null => false                # 可选，但强烈建议加上。
+      t.string    :persistence_token,   :null => false                # 必选
+
+      # Magic columns，就像ActiveRecord的created_at和updated_at一样，这些字段由Authlogic自动维护。
+      t.integer   :login_count,         :null => false, :default => 0 # 可选，详见Authlogic::Session::MagicColumns
+      t.integer   :failed_login_count,  :null => false, :default => 0 # 可选，详见Authlogic::Session::MagicColumns
+      t.datetime  :last_request_at                                    # 可选，详见Authlogic::Session::MagicColumns
+      t.datetime  :current_login_at                                   # 可选，详见Authlogic::Session::MagicColumns
+      t.datetime  :last_login_at                                      # 可选，详见Authlogic::Session::MagicColumns
+      t.string    :current_login_ip                                   # 可选，详见Authlogic::Session::MagicColumns
+      t.string    :last_login_ip                                      # 可选，详见Authlogic::Session::MagicColumns
+      t.timestamps
+end
+
+2.rake db:migrate  更新数据库
+
+3.为了使用authlogic来做这个注册功能，给user model加上一句： 
+class User < ActiveRecord::Base  
+  acts_as_authentic do |c|
+    c.logged_in_timeout = 30.minutes #30.minutes #session 30分 失效
+    c.crypto_provider = Authlogic::CryptoProviders::Sha512 #密码的加密方式
+  end  
+end 
+
+4.接着创建一个UsersController 
+给UsersController添加new方法：
+def new  
+  @user = User.new  
+end  
+<% form_for @user, :url => account_path do |form| %>   
+  <%= form.label :login %>  
+  <%= form.text_field :login %><br/>  
+  <%= form.label :password %>  
+  <%= form.password_field :password %><br/>  
+  <%= form.label :password_confirmation %>  
+  <%= form.label :password_confirmation %><br/>  
+  <%= form.submit 'sign up'%>  
+<% end %> 
+
+user model acts_as_authentic之后，如果user model有crypted_password和password_salt字段，authlogic会为user model自动添加上password和password_confirmation这两个虚拟属性。 
+给UsersController添加create方法： 
+Ruby代码  收藏代码
+def create   
+  @user = User.new params[:user]  
+  if @user.save  
+    flash[:notice] = 'account create successful'  
+    redirect_to root_path  
+  else  
+    render 'new'  
+  end  
+end  
+
+5.创建UserSession model继承自authlogic的Authlogic::Session::Base。
+class UserSession < Authlogic::Session::Base  
+	logout_on_timeout true  # 设置timeout有效
+end  
+
+6.接下来创建一个controller来操作这个Session模型。
+为UserSessionsController定义一个new方法，像普通的RESTful Controller一样，这个new方法返回一个新的UserSession对象以便生成创建会话的表单：  
+rails g controller user_sessions 
+class UserSessionsController < ApplicationController
+
+  def new  
+    @user_session = UserSession.new  
+  end  
+end
+
+views/user_sessions/new.html.erb这个表单也和普通的RESTful表单一样： 
+Ruby代码  收藏代码
+<% form_for @user_session do |form| %>    
+  <%= form.label :login %>  
+  <%= form.text_field :login %><br/>  
+  <%= form.label :password %>  
+  <%= form.password_field :password %><br/>  
+  <%= form.submit 'sing in' %>  
+<% end %>  
+
+7.设置路由： 
+resources :user_sessions, only: [:new, :create, :destroy]
+
+8.创建会话还需要一个create方法： 
+def create  
+  @user_session = UserSession.new params[:user_session]  
+  if @user_session.save  
+    flash[:notice] = 'sign in successful!'  
+    redirect_to root_path  
+  else  
+    render 'new'  
+  end  
+end  
+
+现在就可以去登录页面登录了
+
+9.我们需要一个取到当前登录的用户的方法 
+app/controllers/application_controller.rb 
+class ApplicationController < ActionController::Base  
+  helper_method :current_user, :current_user_session
+  protect_from_forgery # See ActionController::RequestForgeryProtection for details  
+  
+  # Scrub sensitive parameters from your log  
+  # filter_parameter_logging :password  
+  
+  private  
+  
+  def current_user_session  
+    @current_user_session ||= UserSession.find  
+  end  
+  
+  def current_user  
+    @current_user ||= current_user_session && current_user_session.record  
+  end  
+end  
+
+10.在app/controllers/application_controller.rb 中添加一个方法用作验证用户是否登录
+def login_filter
+    if current_user.blank?
+      redirect_to(new_user_session_path)
+    end
+  end
+
+11.最后一步，在需要登录才能操作的contoller中加上过滤器，例如：
+class PostsController < ApplicationController
+  before_filter :login_filter
+
+end
+
+
+
+# 其他
+	在UserSession.new params[:user]的时候已经做了查询？！
+	
+	UserSession.with_scope(:find_options => { :conditions => ["其他的搜索条件"]}) do
+	#“其他的条件”只能是字符串？也只能加一个条件？数组符号可写可不写？
+		@user_session = UserSession.new(params[])
+	end
+

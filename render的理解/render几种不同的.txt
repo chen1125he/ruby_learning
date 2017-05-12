@@ -1,0 +1,11 @@
+    render :action => "long_goal", :layout => "spectacular"  
+    render :partial => "person", :locals => { :name => "david" }  
+    render :template => "weblog/show", :locals => {:customer => Customer.new}  
+    render :file => "c:/path/to/some/template.erb", :layout => true, :status => 404  
+    render :text => "Hi there!", :layout => "special"  
+    render :text => proc { |response, output| output.write("Hello from code!") }  
+    render :xml => {:name => "David"}.to_xml  
+    render :json => {:name => "David"}.to_json, :callback => 'show'  
+    render :inline => "<%= 'hello ' + name %>", :locals => { :name => "david" }  
+    render :js => "alert('hello')"  
+    render :xml => post.to_xml, :status => :created, :location => post_url(post)  

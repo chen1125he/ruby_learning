@@ -1,0 +1,9 @@
+
+可以在类里面写个
+	class LoveLive < ActiveRecord::Base
+		enum judge: {miss: 0, bad: 1, good: 2, great: 3, perfect: 4}
+	end
+	这样LoveLive就会有个LoveLive.judges方法里面是hash，注意是judges
+	也可以用LoveLive.perfect查询所有judge为4的数据
+	实例也有个@love_live.perfect?判断@love_live的judge是否是perfect
+	@love_live.judge点出来的值会是对应的字符串"good", "perfect"等等，也可以对它副值， 但后面都会转化成字符串

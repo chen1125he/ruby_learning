@@ -1,0 +1,3 @@
+应该是默认会引用和controller同名的layout
+
+只有公共的js css要写在layout里面其他的都要写在各自的页面里

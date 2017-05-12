@@ -1,0 +1,43 @@
+
+
+
+
+
+<!-- Set paramètres pour le shadowbox (CSS, JS? . . .) -->
+<script type="text/javascript" src='shadowbox/shadowbox.js'></script>
+<link rel="stylesheet" type="text/css" href="shadowbox/shadowbox.css">
+
+<script type="text/javascript">
+Shadowbox.init({
+    language: 'en',
+    players:  ['iframe']
+});
+function make_add(){
+	temp = document.getElementById('ale').innerHTML
+	document.getElementById('ale').innerHTML = temp/1 + 1
+}
+function open_shadowbox(url, title, w, h){
+          Shadowbox.open({
+              content: url,
+              player: ['iframe'],
+              title: title,
+              width: w/1,
+              height: h/1,
+              resizeable: false
+          })
+      }
+</script>
+
+
+<a href="http://www.baidu.com" rel="shadowbox" title="My Image">My Image</a>
+<a href="javascript: void(0)" onclick="open_shadowbox('http://www.baidu.com', 'none', 200, 300)">open another shadow</a>
+<div id='ale'>0</div>
+<input type="button" value='add' onclick="make_add()" >
+
+
+
+
+
+
+
+

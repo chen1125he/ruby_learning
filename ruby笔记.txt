@@ -1,0 +1,66 @@
+数据类型：
+	指数算数:**   如:2**2就是2的平方
+	
+eql?比较两个对象的值，类型是否相等
+equal?比较内存地址是否相等
+===表示右边的值是否在左边的范围之内
+	
+字符串可以*2就是两个字符串拼接
+
+严格保证空格的使用
+
+
+注释规范：
+	#【引数】string
+	#【返回值】string
+	#【注意】
+	#【著作】 cyy 2016-4-25
+	
+def test str = ""
+	pp "南昌"
+	# start change by cyy 2016-2-25
+	#pp "南昌"
+	pp "change by me"
+	# end   change by cyy 2016-2-25
+	pp "南昌"
+	# start delete by cyy 2016-07-24
+	#pp "南昌"
+	# end   delete by cyy 2016-07-24
+	pp "南昌"
+	pp "南昌"
+	# start add by cyy 2016-4-25
+	pp "南昌"
+	# end   add by cyy 2016-4-25
+	
+	
+\链接下一行，同上一行为同一行
+	或者下一行缩进一格
+	
+通过用短路的方式做if else
+	如:如果a+b>10则输出a+b    a + b > 10 && (pp a + b)
+	
+a, *b = 1, 2, 3  =>a = 1, b = [2, 3]
+
+\n是换行符，但是属于上一行的内容
+
+array类中 at查找第i个(下标从0开始)负数表示逆向查找，(下标从-1开始)
+			insert(pos,*obj)
+			
+map 遍历是会有返回值的，会返回一个同遍历的长度相同，类型相同的集合
+
+ruby 里面相当于get/set方法的是
+		attr_reader :name, :age, :address
+		attr_writer :name, :age, :address
+		实际写成方法就是
+			def name= name = 'cyy'
+				@name = name
+			end
+			
+private 定义的方法只能在类中被某个类的方法访问，但不能在类外调用 （除了用send方法访问 对象.send :方法）
+		（出现一个单行的访问修饰符后直到下一个访问修饰符之前的所有方法都被这个访问修饰符修饰）
+		
+	设置访问优先级的方式有两种
+		一是在方法上面设置
+		二是在下面用 private :showMethod   这种设置的优先级更高，即会覆盖前面的设置
+		
+		 

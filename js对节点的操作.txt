@@ -1,0 +1,22 @@
+1.html
+2.append()
+	向元素末尾(内部)添加节点(也可是html代码？未验证)
+3.appendTo
+	插与被插(→_→)同append相反
+4.after()
+	向元素后面添加节点(也可是html代码？未验证)
+5.before
+	与after相反
+6.insterAfter
+	同before类似,向元素后面添加节点(不可以插入代码)，必须是$()这样的东西
+7.insertBefore
+	与insertAfter相反
+8.empty
+	清空元素内部元素
+9.remove
+	移除元素
+	
+	insertAfter/Before 在新建节点时无论是新建的节点放在前面还是已存在的节点放在前面是没有影响的，只需要理解清楚这方面的逻辑意思就可以了
+	
+	before/after则必须是已经存在的节点放在前面，在|已经存在|的节点前面或者后面放入
+	

@@ -1,0 +1,16 @@
+ Showing E:/cyy_workspace/testweb/app/views/layouts/application.html.erb where line #5 raised:
+
+TypeError: 对象不支持此属性或方法
+
+
+
+If you are running in WIndows, the coffee-script-source 1.9.0 does not work on windows.
+
+Change it to a previous version adding this line to your Gemfile:
+
+gem 'coffee-script-source', '1.8.0'
+
+And then reinstall the bundle adjusting the dependencies for the new Gem version with:
+
+bundle update coffee-script-source
+

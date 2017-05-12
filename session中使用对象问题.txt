@@ -1,0 +1,6 @@
+在rails中 session内是无法存储对象数组的，只能用
+	brands = Brand.all
+	brands = Marshal.dump(brands)
+	session[:brands] = brands
+	
+	用的时候再给转回来，Marshal.load(session[:brands])

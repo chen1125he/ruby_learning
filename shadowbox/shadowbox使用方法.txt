@@ -1,0 +1,24 @@
+1.需要添加shadowbox的整个文件夹进项目，放在public下面，引用时引用两个：一个css，一个js
+2.使用Shadowbox.open({
+	content: url,
+	player: 'iframe',
+	title: title,
+	height: h,
+	width: w,
+	resizable: false
+	#其他的参数上pdf里面找
+})
+来打开网页，但需要先用
+function(){
+	Shadowbox.init({
+		
+	})
+}
+来初始化
+3.在rails里面需要重新配置shadowbox.css里面的样式，包括图片之类，图片的路径可能会变成../javascripts/shadowbox/**
+	在public下面可以另外建立个javascripts和stylesheets的文件夹用来存放这些插件文件
+	
+4.另外在一些链接里面需要加上rel="shadowbox"这个属性
+
+※ open中是palyer,init中是players,注意区分开
+	

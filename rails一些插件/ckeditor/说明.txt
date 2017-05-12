@@ -1,0 +1,8 @@
+js°üº¬ckeditor/ckeditor.js
+	  ckeditor/adapters/jquery
+<script>
+	$(function (){
+		CKEDITOR.disableAutoInline = true
+		$('textarea.ckeditor').ckeditor()	//×÷Ìæ»»ÓÃ
+	})
+</script>

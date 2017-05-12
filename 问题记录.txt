@@ -1,0 +1,29 @@
+1.present?和blank?和nil?和empty?的不同....empty?对象已经存在判断是否为空，blank相当同时满足nil?和empty?,它是属于rails的方法,prresent也是吧
+2.登录插件的user的password和password_confirmation是如何做比较的
+	在有同名(login)的和邮件(email)时候不会做添加？
+3.params.permit!
+3.before_filter和before_action有什么区别吗？
+4.rails中css背景图片怎么办？
+	背景图片这一项在css中是读取不到的要到scss中才能读取的根位置是assets下的images里的
+5.要刷新才能使js和表单等等有效？
+	好像是js放置的相对位置的问题？看看以后还会不会再出现
+	出现了一个现象$().click本应该是放在$()里面的意为页面加载完成后才能实现，但如果是放在外面的话而且在要操作的元素前面就不行了，放在页面前面也不行，要放在后面，从来没碰到过
+	以上的问题都迷之消失了
+6.一个class中已经有一个背景图片，通过添加一个class可以再添加一个背景图片，并使原有的背景图片失效
+	ec中搜索框有
+		.allDiv{
+		  border-radius:5px;
+		  -webkit-border-radius:5px;
+		  width: 160px;
+		  height: 40px;
+		  background: image-url('user/search/button03.png') no-repeat left top;
+		  display:inline-block;
+		  overflow:hidden;
+		  border: medium none;
+		  vertical-align: top;
+		  line-height: 40px;
+		  cursor: pointer;
+		}
+		.allDiv_on{
+		  background: image-url('user/search/button03_on.png') no-repeat left top;
+		}

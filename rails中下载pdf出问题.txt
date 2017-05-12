@@ -1,0 +1,6 @@
+[8:44:34] r.s.hua: 安装完了之后，要在app_config文件中配置路径 config/app_config.yml  :wkhtmltopdf: C:\\wkhtmltopdf\\bin\\wkhtmltopdf.exe
+[8:44:41] r.s.hua: :wkhtmltopdf
+[8:45:00 | 已编辑 8:45:06] r.s.hua: 安装的路径中不能带空格
+[8:45:14] r.s.hua: 同时安装的路径要配置到环境变量的path中
+
+如果路径配置错了，可能会出 permission denied

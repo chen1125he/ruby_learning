@@ -1,0 +1,2 @@
+在controller中
+	before_action :method, only/except: [:method,...]在执行这些方法前所先要执行的方法

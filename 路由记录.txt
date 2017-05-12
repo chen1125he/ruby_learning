@@ -1,0 +1,27 @@
+0.普通的路由匹配 get'/controller[/:id]' to: 'controller#action'
+1.http方法有几个不同的样式get/post/patch/put/delete
+2.resources和resource是不同的，有个单数资源的概念,具体区分暂时不清楚
+	resources :controller, only: [action1, action2, action3]
+3.namespace :admin do 
+		//admin是在controller下面的文件夹，以此作为它的命名空间
+	end
+	
+	如果controller在某个文件夹(命名空间)上却又想去掉
+	scope module 'admin' do 
+		resources
+	 end
+	 如果是单个的可以用resources :controller, module: 'namespace'
+	 ！！注意和下面的还是有一些区别的一个有斜杠，这个写在最外层吧
+	 
+	如果在却不想要
+	scope '/admin' do 
+		resources 
+	end 
+	这个如果是单个的话用resources :controller, path: '/namespace/controller'
+	注意和最上面的那个‘to’区分开吧
+	
+	这里面的路由，同一个action可以有多个路由，像admin下的free_pages可以有admin/free_pages也可以通过module变成/free_pages，两条路由都能访问
+4.嵌套，暂时用不上，先搁置
+5.成员路由可以在链接的帮助方法中加入id作为参数，而集合路由则不能
+	写在resources里面，用collection/member do end
+	单个的用on: 

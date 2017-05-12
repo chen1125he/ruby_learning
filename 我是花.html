@@ -1,0 +1,42 @@
+<html>
+<head>
+	<script src="http://apps.bdimg.com/libs/jquery/1.6.4/jquery.js"></script>
+	<script>
+		$(function(){
+			$("td").click(function(){
+				pos = [[0,1], [0, -1], [1, 0], [-1, 0]]
+				t = $(this).attr('id')
+				arr = t.split("_");
+				for(i = 0; i < pos.length; i++){
+					$j = $("#"+(arr[0]/1+pos[i][0])+"_"+(arr[1]/1+pos[i][1]))
+					if($j.length > 0 && $j.html() == ""){
+						$j.html($(this).html())
+						$(this).html('')
+						break;
+					}
+				}
+			})
+		})
+	</script>
+</head>
+
+<body>
+	<table border="1" align='center'>
+		<tr>
+			<td id="1_1"><img src="http://a1.qpic.cn/psb?/V12Xba430Bo8nT/RoDvBSH4K2MVdG*WBky9BZKjt099MNqAvWmCzK9OE2Y!/m/dAgBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+			<td id="1_2"><img src="http://a3.qpic.cn/psb?/V12Xba430Bo8nT/rtH3DfxRN4nVotFCi7KCqoJEU*VRRyz2ti5FUtUzJ5w!/m/dAYBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+			<td id="1_3"><img src="http://a3.qpic.cn/psb?/V12Xba430Bo8nT/hwwU*p8ccu7S9xmMRBYUyE37ervXfb1pAQNHSa4gfIg!/m/dAYBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+		</tr>
+		<tr>
+			<td id="2_1"><img src="http://a4.qpic.cn/psb?/V12Xba430Bo8nT/i3.eRn6fSWLMxvC1jVHYMdKmeWe9rKbdGTyVUyDd*mE!/m/dAcBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+			<td id="2_2"><img src="http://a4.qpic.cn/psb?/V12Xba430Bo8nT/LkzdvFTXMGQLHF2fLyIunjASAqlLNzDxYvFnFLViQ3A!/m/dAcBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+			<td id="2_3"><img src="http://a1.qpic.cn/psb?/V12Xba430Bo8nT/B7DmMBPFge42fBGz5qsx9s8Fm9vC8nz1h1ERwEhjc24!/m/dAQBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+		</tr>
+		<tr>
+			<td id="3_1"></td>
+			<td id="3_2"><img src="http://a3.qpic.cn/psb?/V12Xba430Bo8nT/s*g2D5jYOYFu21zw*LdFDxJFkxJs4JC.RrvlK3QoecE!/m/dAYBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+			<td id="3_3"><img src="http://a4.qpic.cn/psb?/V12Xba430Bo8nT/IShj47.ImrAwpFA4Ue6KkpgSZM84QtKlzx0rgy5Evro!/m/dAMBAAAAAAAA&ek=1&kp=1&pt=0&bo=OgE6AToBOgEFACM!&sce=0-12-12&rf=0-18" /></td>
+		</tr>
+	</table>
+</body>
+</html>

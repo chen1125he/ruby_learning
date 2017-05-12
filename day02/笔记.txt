@@ -1,0 +1,51 @@
+其他：常量和类变量差不多只能通过类访问，也都能在方法（实例方法和类方法）中访问
+在对一些取一些变量或方法名的时候的时候，变量或方法名'variable'可以用:variable代替？！('method'.to_sym = :method)
+
+动态特性
+	eval 可以将官也街串转化成ruby代码
+	class_eval 给类动态添加新方法
+		AClass.class_eval do
+			def method
+			
+			end
+		end
+	
+	instance_eval 给对象动态添加新方法
+		an_obj.instance_eval do
+			def method
+			
+			end
+		end
+		
+		还可以
+		class << an_obj
+			def method
+				
+			end
+		end
+	const_set 设置常量
+		AClass.const_set :variable/'variable', value
+	
+	send 可以用对象调用私有方法
+		an_obj.send 'method'/:method
+		
+	remove_method 移除方法 undef也是一样的  可以写在类里面，不过这样做的意义是什么呢？！
+		AClass.send(:remove_method,'method_name')(这里的method_name不能写成:method_name,因为是参数？！)
+		
+	instance_variable_s/get 设置/取实例变量
+	
+	class_variables是取所有类变量的名字(带@@)放在数组里
+	
+	class_variabble_s/get
+	
+	伪变量：self\nil\true\false\__FILE__\__LINE__它们的值不可改变否则发生语法错误
+	
+	
+访问修饰符
+	private 在当前类和子类中可以访问，不能被实例对象调用
+	public 可以被当前类及其子类访问，也可以被他们的实例对象调用
+	protected 可以在当前类及其子类访问，不能被对象直接调用，但可以指定给对象self.method 详见day02/test2.rb
+		而private 却不能用self.method访问，但这样好像并没什么卵用
+		
+方法名中也能包含符号，甚至只用符号定义
+	用符号定义的方法可以不打点调用如 an_obj + variable打点也行，否则只能用打点调用了

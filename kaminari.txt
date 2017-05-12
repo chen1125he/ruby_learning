@@ -1,0 +1,63 @@
+1. Gemfile文件中加上 gem 'kaminari'
+
+2.执行： rails g kaminari:config
+生成config/initializers/kaminari_config.rb
+修改成下面这样：
+Kaminari.configure do |config|
+   config.default_per_page = 10
+   config.max_per_page = nil
+   config.window = 4
+   config.outer_window = 0
+   config.left = 0
+   config.right = 0
+   config.page_method_name = :page
+   config.param_name = :page
+end
+
+3.执行：rails g kaminari:views default
+生成 
+app/views/kaminari/_first_page.html.erb
+app/views/kaminari/_gap.html.erb
+app/views/kaminari/_last_page.html.erb
+app/views/kaminari/_next_page.html.erb
+app/views/kaminari/_page.html.erb
+app/views/kaminari/_paginator.html.erb
+app/views/kaminari/_prev_page.html.erb
+
+
+
+
+4.在i18n配置文件(cn.yml)中加上：
+cn:
+  views:
+    pagination:
+      first: "&laquo; 首页"
+      last: "最后 &raquo;"
+      previous: "&lsaquo; 上一页"
+      next: "下一页 &rsaquo;"
+      truncate: "&hellip;"
+  helpers:
+    page_entries_info:
+      one_page:
+        display_entries:
+          zero: "No %{entry_name} found"
+          one: "Displaying <b>1</b> %{entry_name}"
+          other: "Displaying <b>all %{count}</b> %{entry_name}"
+      more_pages:
+        display_entries: "Displaying %{entry_name} <b>%{first}&nbsp;-&nbsp;%{last}</b> of <b>%{total}</b> in total"
+
+5. 在action中修改获取数据的查询方法
+
+   def index
+    @posts = Post.page(params[:page]).per(10).order(:id)
+    end
+page(params[:page]).per(10) 主要是加了调用这两个方法
+10表示一页多10条数据， params[:page]是当前的页面，这个参数由分页插件维护
+
+6. 在页面上要显示分页的地方加上 <%= paginate @posts %>
+这个方法会自动生成上一页、下一页等url
+如下:
+« First ‹ Prev ... 2 3 4 5 6 7 8 9 10 ... Next › Last »
+
+
+

@@ -1,0 +1,12 @@
+1.让checkbox被选中
+	$("[type=checkbox]").prop('checked', true)
+2.让checkbox取消选中
+	$("[type=checkbox]").removeAttr('checked')
+3.遍历多个checkbox
+	$("[type=checkbox]").each(function(){
+		$(this)
+	})
+4.判断是否选中
+	$("[type=checkbox]").each(function(){
+		$(this).is(':checked') == false/true
+	})

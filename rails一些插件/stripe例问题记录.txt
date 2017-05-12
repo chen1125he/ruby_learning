@@ -1,0 +1,162 @@
+1.网址:stripe.com/docs/example
+2.gem 'eventmachine', '~>1.0.4'
+3.gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]    当不能migrate的时候
+4.sqlite3是一个数据库，去下吧
+
+5.	if Rails.env == 'production'
+	  Rails.configuration.stripe = {
+		:publishable_key => MY_PUBLISHABLE_KEY,
+		:secret_key      => MY_SECRET_KEY
+	  }
+	else
+	  Rails.configuration.stripe = {
+		:publishable_key => TEST_MY_PUBLISHABLE_KEY,
+		:secret_key      => TEST_MY_SECRET_KEY
+	  }
+	end
+
+	Stripe.api_key = Rails.configuration.stripe[:secret_key]
+	放到config/initializers/stripe.rb
+
+6.	= form_tag('/stripe_checkout',{method: :post}) do
+	%script{src: "https://checkout.stripe.com/checkout.js",
+          class: "stripe-button",
+          'data-key'=> "#{Rails.configuration.stripe[:publishable_key]}",
+          'data-amount'=> 10.0,
+          'data-email' => "customer@example.com",
+          'data-currency' => 'USD'}
+		  放到随便一个页面里面点击就能付款了
+		  data-amount设置显示价格
+		  /stripe_checkout是访问stripe成功后得到用户tocken 去的action的页面
+		  账号可以用4242 4242 4242 4242
+7.	def stripe_checkout
+	  @amount = 10
+	  #This will create a charge with stripe for $10
+	  #Save this charge in your DB for future reference
+	  charge = Stripe::Charge.create(
+					  :amount => @amount * 100,
+					  :currency => "usd",
+					  :source => params[:stripeToken],
+					  :description => "Test Charge"
+	  )
+	  flash[:notice] = "Successfully created a charge"
+	  redirect_to '/subscription'
+	end
+	到这个页面才是付款, create是付款的方法
+	
+8.	# views/index.html.haml		//这个应该是new吧
+	%h1 Create a new subscription
+	= form_tag('/subscription',{method: :post}) do
+	  .form-group
+		%label Plan name
+		%input{:type => 'text', :name => 'name'}
+	  .form-group
+		%label Plan interval
+		= select_tag 'interval', options_for_select(['month', 'year']), multiple: false, :include_blank => true,  class: "form-control"
+	  .form-group
+		%label Plan Value
+		%input{:type => 'text', :name => 'amount'}
+
+	  %button{:type => "submit"} Submit to Stripe
+	  应该是new的index.html.haml
+	  
+9.	# controllers/subscriptions_controller.rb
+	class SubscriptionController < ApplicationController
+	  require "stripe"
+
+	  def create
+		subscription = Stripe::Plan.create(
+		  :amount => (params[:amount].to_i)*100,
+		  :interval => params[:interval],
+		  :name => params[:name],
+		  :currency => 'usd',
+		  :trial_plan => null
+		  :id => SecureRandom.uuid # This ensures that the plan is unique in stripe
+		)
+		#Save the response to your DB
+		flash[:notice] = "Plan successfully created"
+		redirect_to '/subscription'
+	  end
+	end
+	create一个plans的方法
+	
+	一个plan的类里面应该有下面的属性
+		{
+		  interval: "month"
+		  name: "Pro"
+		  created: 1429342808
+		  amount: 1500
+		  currency: "usd"
+		  id: fb2488b5-5e83-49b5-9071-781ca04489c4
+		  object: "plan"
+		  livemode: false
+		  interval_count: 1
+		  trial_period_days: null
+		  metadata:
+		  statement_descriptor: null
+		}
+	
+	
+10.		#controllers/subscription_controller.rb
+		#......
+		def plans
+		  @stripe_list = Stripe::Plan.all
+		  @plans = @stripe_list[:data]
+		end
+		#......
+		
+		查询所有的方法
+		查询单个的方法是plan = Stripe::Plan.retrieve(id)
+						返回一个plan
+						可以plan.name = ''
+							plan.save
+						也可以Stripe::Plan.update(id, {params},{options})
+						能更新的好像只有三个属性name = string, metadata = hash, statement_descriptor
+						也可以用delete  plan.delete
+11.		.plan-container
+		  %ul
+			- @plans.each do |plan|
+			  %li.plan
+				.header
+				  =plan[:name]
+				.price
+				  =(plan[:amount]/100)
+				= form_tag('/subscription_checkout', {method: :post, plan: plan}) do
+				  %input{type: "hidden", name: "plan_id", value: plan[:id]}
+				  %script{src: "https://checkout.stripe.com/checkout.js",
+						  class: "stripe-button",
+						  'data-key'=> "#{Rails.configuration.stripe[:publishable_key]}",
+						  'data-amount'=> (plan[:amount]),
+						  'data-email' => "customer@example.com",
+						  'data-currency' => plan[:currency],
+						  'data-image' => '/assets/sitepoint.png'}
+		显示plans的plns的页面plans.html.haml
+		
+		
+12. webhooks
+	# controllers/subscription_controller.rb
+	# Method responsbile for handling stripe webhooks
+	# reference https://stripe.com/docs/webhooks
+	def webhook
+	  begin
+		event_json = JSON.parse(request.body.read)
+		event_object = event_json['data']['object']
+		#refer event types here https://stripe.com/docs/api#event_types
+		case event_json['type']
+		  when 'invoice.payment_succeeded'
+			handle_success_invoice event_object
+		  when 'invoice.payment_failed'
+			handle_failure_invoice event_object
+		  when 'charge.failed'
+			handle_failure_charge event_object
+		  when 'customer.subscription.deleted'
+		  when 'customer.subscription.updated'
+		end
+	  rescue Exception => ex
+		render :json => {:status => 422, :error => "Webhook call failed"}
+		return
+	  end
+	  render :json => {:status => 200}
+	end
+	
+	关于webhooks在dashboard.stripe.com的your addcount里面设置

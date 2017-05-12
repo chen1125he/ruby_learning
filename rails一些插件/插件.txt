@@ -1,0 +1,5 @@
+1.rails-i18nterface
+2.paper_trail
+3.stripe 支付插件
+4.devise 类似auth的插件
+5.ckeditor插件： js

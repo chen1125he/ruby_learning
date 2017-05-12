@@ -1,0 +1,44 @@
+/b/,red,/d/,green 设置属性的串建议写成这样，其中的正则表达式必须用//包住<br />
+<script src="jquery-1.8.3.js"></script>
+<script>
+	//上面用了JQ包
+	function fun(){
+		//regexp = "/b/,red,/d/,green" 模式gm在下面添加就不用输入了添加了也会自动去掉
+		var regexp = $("#regexp").val()
+		// 替换属性串中的 "< >"两个符号
+		while(/\</.test(regexp))
+		regexp = regexp.replace(/\</, '&lt;')
+		while(/\>/.test(regexp))
+		regexp = regexp.replace(/\>/, '&gt;')
+		//regexp = ["/b/","red","/d/","green"]
+		// 用于设置属性的串必须以','或者'，'(英文或中文逗号)分隔
+		regexp = regexp.split(/,|，/)
+		var str = $("#str").val()
+		// 替换原串中的 "< >"两个符号
+		while(/\</.test(str))
+		str = str.replace(/\</, '&lt;')
+		while(/\>/.test(str))
+		str = str.replace(/\>/, '&gt;')
+		for(var i = 0; i < regexp.length - 1; i += 2){
+			// 提取出设置属性用的串中的正则表达式，此正则表达式必须被 // 包住
+			regexp[i] = regexp[i].replace(/[^\/]*\/(.*?)\/[^\/]*/, "$1")
+			// 定义用于替换的正则
+			// 思路是 ：假设原串是abcdbefg  属性串："/b/g","red","/d/g","green"
+			// 第一次替换b 变成a<font color='red'>b</font>cd<font color='red'>b</font>efg
+			// 第二次开始就是主要的了，下面的正则分成三个部分第一部分匹配每行开始到下一个font标签开始部分或者行末，对应上面第一次替换后的a,第二部分匹配从每行最后一个font标签或者行的开始到行末对应第一次匹配后的efg,第三分部则是font标签中间的部分，对应cd
+			var reg = new RegExp("(^[^<]*?)("+regexp[i]+ ")([^>]*?(?:\<|$))|((?:\>|^)[^<]*?)("+regexp[i]+ ")([^>]*?$)|((?:font\>)[^<]*?)("+regexp[i]+ ")([^>]*?(?:\<font))", 'gm')
+			// 因为js没有replaceAll只能用循环来做，一般来讲用循环是很危险的，这里的情况比较特殊没什么问题
+			while(reg.test(str))
+			str = str.replace(reg, "$1$4$7<font color='"+ regexp[i+1] +"'>$2$5$8</font>$3$6$9")
+		}
+		alert(str)
+		str = str.replace(/\n/gm, '<br />')
+		$("#show_str").html(str)
+	}
+</script>
+
+str: <textarea id="str"></textarea>
+regexp: <input type="text" id="regexp"><br />
+<input type="button" value="运行" onclick="fun()">
+<br />
+<span id="show_str"></span>

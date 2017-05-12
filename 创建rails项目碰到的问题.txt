@@ -1,0 +1,8 @@
+1.No source of timezone data could be found. (TZInfo::DataSourceNotFound)
+	检查rails 应用的gemfile文件，看是否存在tzinfo-data。若已经存在，会找到类似以下的一行，
+   gem 'tzinfo-data', platforms: [:mingw, :mswin]。
+   由于使用的64位的系统，因此需要给platforms增加:x64_mingw的设置，
+   gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
+   
+2."Specified 'mysql2' for database adapter, but the gem is not loaded"
+	gem 'mysql2', '~> 0.3.18'

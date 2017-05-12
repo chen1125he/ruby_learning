@@ -1,0 +1,6 @@
+Stack trace:
+Frame     Function  Args
+40199707 [sig] sh 5568 get_proc_lock: Couldn't acquire sync_proc_subproc for(5,0), last 1, Win32 error 0
+40241747 [sig] sh 5568 proc_subproc: couldn't get proc lock. what 5, val 0
+80134220 [waitproc] sh 5568 get_proc_lock: Couldn't acquire sync_proc_subproc for(5,1), last 1, Win32 error 6
+80176781 [waitproc] sh 5568 proc_subproc: couldn't get proc lock. what 5, val 1

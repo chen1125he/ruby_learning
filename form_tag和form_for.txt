@@ -1,0 +1,11 @@
+1.form_for
+	<%= form_for @post(是一个对象), as: :post, url: post_path(@post), method: :patch, html: { class: "edit_post", id: "edit_post_45" } do |f| %>
+	  ...
+	<% end %>
+	
+2.form_tag
+	form_tag(url_for_options = {}, options = {}, &block) 
+	
+	
+	form_for中的name属性不加对象,如 f.text_field :username
+	而form_tag的加tag后缀的标签的name属性则要加对象,如 text_field 'user[username]'

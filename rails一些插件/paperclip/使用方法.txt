@@ -1,0 +1,61 @@
+1.gem paperclip
+
+2.使用多态class XxxPicture < Picture
+			  has_attached_file :image, styles: { thumb: '233x204>', small: '80x80>' },
+                    :url => Settings[:campaign_url],		//url是取
+                    :path => Settings[:campaign_path],		//path是存
+                    default_url: '/images/:style/missing.png'
+			  validates_attachment :image, presence: true,
+								   content_type: { content_type: /\Aimage\/.*\Z/ },
+								   size: { less_than: 5.megabytes }
+			  do_not_validate_attachment_file_type :image
+			  belongs_to :xxx, class_name: 'Xxx'
+			  belongs_to :owner, :polymorphic => true
+			  belongs_to :picture
+
+		  end
+		  
+		  
+		  
+		  path: :rails_root/public/attachment/campaign/:id/:style/:basename.:extension		
+				:rails_root项目路径，:id picture的id，:style => original, thumb, small...., :basename文件原名，:extension扩展名
+		  url:  /attachment/campaign/:id/:style/:basename.:extension   取图存图的时候用的吧  如果写错了会有can't dump NilClass
+
+		  
+		  
+3.picture写migration的时候应该加上owner_type string和t.attachment :image (=> image_file_name, image_content_type, image_file_size 三个字段)总共四个字段
+
+4.下载安装imagemagick
+	安装的时候有多选框最好全部勾上	否则可能NotIdentifiedByImageMagickError
+	在development里面加上Paperclip.options[:command_path] = 'D:\\ImageMagick-7.0.3-Q16'
+	
+5.在initializers里面加上个文件paperclip_media_type_spoof_detector.rb,有个问题会需要这个，具体的忘记了
+	require 'paperclip/media_type_spoof_detector'
+	module Paperclip
+	  class MediaTypeSpoofDetector
+		def spoofed?
+		  false
+		end
+	  end
+	end
+
+6.controller里的图片关联
+	if params[:campaign][:image].present?
+      picture = @campaign.campaign_picture
+      if picture.blank?
+        picture = CampaignPicture.new
+        picture.owner = @campaign
+      end
+      picture.image = params[:campaign][:image]
+      picture.save
+    else
+      true
+    end
+7.view里面应当写成
+	f.file_field :image 而不是file_field_tag :image否则会出现文件转换异常
+8.在页面上取图片的时候可以用
+	xxx.xxx_picture.image.url(:style)  :style有 :original, :thumb, :small，有可能是可变的，在最上面的styles里面定义
+
+
+	https://github.com/thoughtbot/paperclip/issues/1405
+	http://blog.sina.com.cn/s/blog_4b9d604f0101oo8i.html

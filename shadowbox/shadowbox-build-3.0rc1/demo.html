@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
+<title>ShadowBox V3.0RC1 功能演示</title>
+<link rel="stylesheet" type="text/css" href="images/style.css">
+<!-- the following lines are only required for the demos -->
+<script type="text/javascript" src="images/demo.js"></script>
+
+<!-- other libraries (for testing purposes) -->
+<!-- <script type="text/javascript" src="js/dojo-1.2.3.js"></script> -->
+<!-- <script type="text/javascript" src="js/ext-base-2.2.1.js"></script> -->
+<!-- <script type="text/javascript" src="js/ext-core-2.2.1.js"></script> -->
+<!-- <script type="text/javascript" src="js/jquery-1.3.2.js"></script> -->
+<!-- <script type="text/javascript" src="js/mootools-1.2.1.js"></script> -->
+<!-- <script type="text/javascript" src="js/prototype-1.6.1.js"></script> -->
+<!-- <script type="text/javascript" src="js/yahoo-dom-event-2.7.0b.js"></script> -->
+<!-- this section is the only one needed to run Shadowbox -->
+<link rel="stylesheet" type="text/css" href="shadowbox.css">
+<script type="text/javascript" src="shadowbox.js"></script>
+<script type="text/javascript">
+Shadowbox.init({
+    language: 'en',
+    players:  ['img', 'html', 'iframe', 'qt', 'wmp', 'swf', 'flv']
+});
+</script>
+</head>
+<body>
+<div id="outer-wrapper">
+  <div id="wrapper">
+    <div class="demos">
+      <h1><a name="demos">ShadowBox V3.0RC1 功能演示</a></h1>
+      <h3>Images</h3>
+      <a rel="shadowbox" href="http://farm2.static.flickr.com/1177/1150569783_61dbc56834.jpg" class="option">Single Image (Flickr)</a> <a rel="shadowbox[Aston Martin];options={slideshowDelay:3}" href="images/vantage.jpg" class="option" title="Vantage">Image Gallery (slideshow)</a> <a rel="shadowbox[Aston Martin];options={slideshowDelay:5}" href="images/vanquish.jpg" class="hidden">image</a> <a rel="shadowbox[Aston Martin];" href="images/db9.jpg" class="hidden" title="DB9">image</a>
+      <h3 style="padding-top:9px">Thumb Gallery</h3>
+      <table class="thumbs" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td><a rel="shadowbox[MustangThumbs];options={counterType:'skip',continuous:true,animSequence:'sync'}" href="images/red.jpg"><img src="images/red-thumb.jpg" alt="Red" id="red-mustang" class="border"></a></td>
+            <td><a rel="shadowbox[MustangThumbs];options={counterType:'skip',continuous:true,animSequence:'sync'}" href="images/blue.jpg" title="Blue Mustang"><img src="images/blue-thumb.jpg" alt="Blue" id="blue-mustang" class="border"></a></td>
+            <td><a rel="shadowbox[MustangThumbs];options={counterType:'skip',continuous:true,animSequence:'sync',handleOversize:'resize'}" href="images/grey.jpg"><img src="images/grey-thumb.jpg" alt="Grey" id="grey-mustang" class="border"></a></td>
+          </tr>
+        </tbody>
+      </table>
+      <h3><a name="lgimage-demo">Large Image</a></h3>
+      <table class="thumbs" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td><a rel="shadowbox;options={handleOversize:'none'}" href="images/greatwall.jpg" title="Great Wall of China"><img src="images/greatwall-thumb.jpg" alt="" class="border"></a></td>
+            <td><a rel="shadowbox" href="images/greatwall.jpg" title="Great Wall of China"><img src="images/greatwall-thumb.jpg" alt="" class="border"></a></td>
+            <td><a rel="shadowbox;options={handleOversize:'drag'}" href="images/greatwall.jpg" title="Great Wall of China"><img src="images/greatwall-thumb.jpg" alt="" class="border"></a></td>
+          </tr>
+          <tr>
+            <td>Clipped (no resizing)</td>
+            <td>Resized</td>
+            <td>Draggable</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3>Image Map</h3>
+      <div id="hongkong"> <img src="images/hongkong.jpg" width="600" height="82" alt="Hong Kong" usemap="#hongkongmap" class="border">
+        <map id="hongkongmap" name="hongkongmap">
+          <area shape="rect" coords="43,27,135,77" href="images/hongkong-1.jpg" alt="">
+          <area shape="rect" coords="191,11,286,74" href="images/hongkong-2.jpg" alt="">
+          <area shape="rect" coords="419,2,502,81" href="images/hongkong-3.jpg" alt="">
+        </map>
+      </div>
+      <h3>Flash</h3>
+      <table class="thumbs" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td><a rel="shadowbox;width=400;height=300" title="Girl Skipping" href="http://www.shadowbox-js.com/gallery/skip.swf"><img src="images/skip-thumb.gif" alt="" class="border"></a></td>
+            <td><a class="flash-gallery" rel="width=520;height=390;options={flashParams:{bgcolor:'#ffffff'}}" title="Caveman" href="http://www.shadowbox-js.com/gallery/caveman.swf"><img src="images/caveman-thumb.gif" alt="" class="border"></a> <a class="flash-gallery hidden" rel="width=600;height=450" title="Hollywood or Bust" href="http://www.shadowbox-js.com/gallery/old_man.swf">swf</a> <a class="flash-gallery hidden" rel="width=400;height=300" title="Girl Skipping" href="http://www.shadowbox-js.com/gallery/skip.swf">swf</a></td>
+            <td><a rel="shadowbox;width=600;height=450" title="Alien" href="http://www.shadowbox-js.com/gallery/alien.flv"><img src="images/alien-thumb.gif" alt="" class="border"></a></td>
+          </tr>
+          <tr>
+            <td>Single SWF</td>
+            <td>SWF Gallery</td>
+            <td>Flash Video</td>
+          </tr>
+        </tbody>
+      </table>
+      <h3 style="padding-top:9px">Movies</h3>
+      <table class="thumbs" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td><a rel="shadowbox;width=405;height=340;player=swf" title="Ebon Coast" href="http://www.youtube.com/v/lSnWhsmlGec&amp;hl=en&amp;fs=1&amp;rel=0&amp;autoplay=1"><img src="images/mckee-thumb.jpg" alt="" class="border"></a></td>
+            <td><a rel="shadowbox;width=480;height=204" title="The Dark Knight" href="http://movies.apple.com/movies/wb/the_dark_knight/the_dark_knight-tlr2-h.ref.mov"><img src="images/darkknight-thumb.jpg" alt="" class="border"></a></td>
+            <td><a rel="shadowbox;width=512;height=322;options={flashVars:{id:'v2155043',vid:2021599,autoPlay:1},flashParams:{AllowScriptAccess:'always',allowFullScreen:'true'}}" title="Sweetness" href="http://d.yimg.com/static.video.yahoo.com/yep/YV_YEP.swf?ver=2.2.40"><img src="images/sweetness-thumb.jpg" alt="" class="border"></a></td>
+          </tr>
+          <tr>
+            <td>YouTube</td>
+            <td>Apple Trailer</td>
+            <td>Yahoo! Video</td>
+          </tr>
+        </tbody>
+      </table>
+      <table class="thumbs" border="0" cellspacing="0" cellpadding="0">
+        <tbody>
+          <tr>
+            <td><a rel="shadowbox;width=400;height=225;options={flashVars:{clip_id:1893986,autoplay:'true'}}" title="The Last Eggtion Hero" href="http://vimeo.com/moogaloop.swf"><img src="images/eggtion-thumb.jpg" alt="" class="border"></a></td>
+            <td><a rel="shadowbox;width=405;height=340" title="While My Ukulele Gently Weeps" href="http://video.google.com/googleplayer.swf?docid=1352016870638076087&amp;autoplay=1"><img src="images/ukulele-thumb.jpg" alt="" class="border"></a></td>
+          </tr>
+          <tr>
+            <td>Vimeo</td>
+            <td>Google Video</td>
+          </tr>
+        </tbody>
+      </table>
+      <p> <a rel="shadowbox;width=320;height=240" class="option" title="Curious Cat" href="http://www.shadowbox-js.com/gallery/cat.wmv">Windows Media (wmv)</a> </p>
+      <h3 style="padding-top:9px">Web</h3>
+      <p> <a rel="shadowbox" class="option" title="This page" href="http://www.5icool.org/">This Page</a> <a rel="shadowbox" class="option" title="Google.com" href="http://www.google.com/">External Site</a> <a class="option" onclick="demoGoogleMaps();">Google Maps</a> </p>
+      <h3 style="padding-top:9px">Miscellaneous</h3>
+      <p> <a rel="shadowbox;width=200;height=400" class="option" title="Inline content" href="index.html#inline-sample">Inline Content</a> <a rel="shadowbox;width=400;height=100" class="option" title="Search Form" href="http://www.shadowbox-js.com/form.html">Simple Form</a> <a class="option" onclick="demoMessage();">Script-triggered Message</a> <a class="option" onclick="demoGallery();">Script-triggered Gallery</a> </p>
+    </div>
+  </div>
+</div>
+<DIV style="CLEAR: both; MARGIN-BOTTOM: 18px"></DIV></DIV>
+<p align="center"><strong>ShadowBox V3.0RC1图片特效</strong>  <a href="http://www.5icool.org/a/200912/114.html" target="_blank">[源码下载][使用帮助]</a></p>
+
+<p align="center">代码整理：<a href="http://www.5icool.org/" target="_blank">酷站代码</a>，转载请注明出处。　本代码仅限于学习交流，请勿用于商业用途! </p>
+</body>
+</html>
