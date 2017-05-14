@@ -11,6 +11,8 @@
 2.<input id="test_file" name="images[]" type="file" multiple class="file-loading">
 	加上multiple决定可以上传多张图片
 	
+2.5还有一些图片依赖，需要用路径引入吧，尤其是css
+	
 3.
 	$(function(){
 		

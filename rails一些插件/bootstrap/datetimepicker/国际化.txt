@@ -1,0 +1,17 @@
+$.fn.datetimepicker.dates['cn'] = {
+    days: ["星期日", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+    daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+    daysMin: ["日", "一", "二", "三", "四", "五", "六"],
+    months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    today: "Today",
+    clear: "Clear",
+    format: "mm/dd/yyyy",
+    titleFormat: "MM yyyy", /* Leverages same syntax as 'format' */
+    weekStart: 0
+};
+
+写在一个js文件里面，然后引入
+language: 'cn'
+要在初始化之前引入
+还有一定要是datetimepicker，不要混成datepicker
