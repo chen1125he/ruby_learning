@@ -6,3 +6,5 @@ js包含ckeditor/ckeditor.js
 		$('textarea.ckeditor').ckeditor()	//作替换用
 	})
 </script>
+配置在ckeditor/config.js里面
+如果修改了配置文件没有效果试试清除缓存
