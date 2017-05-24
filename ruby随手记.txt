@@ -286,5 +286,20 @@ p.banner_pic img {
 102.在固定宽度的容器内如果文字和图片相交了，不妨把文字设置成overflow
 103.在保存失败render一个页面的时候，如果有什么值要通过@变量传递到页面上，需要在render 之前赋值
 104.bootstrap的colorpicker在js初始化的时候会生成两个div，在做ajax的时候注意不要去把这个初始化包含在了render里面造成多次初始化，否则会有colorpicker不消失的问题
+
 105.在div里面，如果想让边距有颜色，只能是padding了
 	给一个先给容器设置颜色再给加padding,margin是没有颜色的
+	
+106.一些插件引用到rails项目中的时候，需要分开放到几个文件夹
+	注意不能只单单引入js和css也可能有图片或者字体依赖的
+	像bootstrap，可能会有一些图标不能显示，就是少了字体文件
+	
+107.timestamps里面的时间如果不设置那么默认就是UTC的时间了
+	如果如果是东8区，那么存储的时间就会晚8个小时
+	需要做设置的话就设置时间
+	config.time_zone = 'Beijing'
+	config.active_record.default_timezone = :local
+	这里如果代码服务器和db服务器不在一起，那么时间会是代码服务器
+	https://ruby-china.org/topics/16187
+108.假删除
+	
