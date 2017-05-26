@@ -1,0 +1,189 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="slick.css"/>
+	<link rel="stylesheet" type="text/css" href="slick-theme.css"/>
+	<script type="text/javascript" src="../jquery-1.10.2.js"></script>
+	<script type="text/javascript" src="../jquery-migrate-1.2.1.min.js"></script>
+	
+	<script type="text/javascript" src="slick.min.js"></script>
+	
+	<style rel="stylesheet">
+		.your-class .slide{
+			color: red;
+		}
+		.your-class{
+			height: 350px;
+		}
+		.my-class{
+			height: 100px;
+			background: #f2f2f2;
+			padding: 10px 40px;
+		}
+		.my-class .slider{
+			margin: 10px;
+		}
+		.my-class .slider:nth(1){
+			background: blue;
+		}
+		.content{
+			width: 1040px;
+			height: 500px;
+			margin: auto
+		}
+		.campaign_pic{
+			display: table-cell;
+			text-align:center;
+			vertical-align: middle;
+			width: 750px;
+			height:350px;
+			padding: 0 10px;
+		}
+		.campaign_pic img{
+			text-align:center;
+			vertical-align: middle;
+			max-width:750px;
+			max-height: 350px;
+		}
+		
+		.small_campaign_pic{
+			display: table-cell;
+			text-align:center;
+			vertical-align: middle;
+			width: 172;
+			height:80px;
+			padding: 0 10px;
+			margin: 10px;
+		}
+		.small_campaign_pic img{
+			text-align:center;
+			vertical-align: middle;
+			max-width:172px;
+			max-height: 80px;
+			margin: auto;
+		}
+		.your-class .slick-slide:not(.slick-center){
+			opacity: 0.5;
+		}
+	</style>
+	
+</head>
+
+<body>
+	<div class="content">
+	<div class="your-class">
+	  <div class="slide">
+		<div class="campaign_pic" myattr="campaign5">
+			<img src="05.jpg">
+		</div>
+	  </div>
+	  <div class="slide">
+		<div class="campaign_pic" myattr="campaign4">
+			<img src="04.jpg">
+		</div>
+	  </div>
+	  <div class="slide">
+		  <div class="campaign_pic" myattr="campaign3">
+			<img src="03.jpg">
+		  </div>
+	  </div>
+	  <div class="slide">
+		  <div class="campaign_pic" myattr="campaign2">
+			<img src="02.jpg">
+		  </div>
+	  </div>
+	</div>
+	
+	<div class="my-class">
+	  <div class="slide">
+		  <div class="small_campaign_pic small_campaign1">
+			<img src="05.jpg">
+		  </div>
+	  </div>
+	  <div class="slide">
+		  <div class="small_campaign_pic small_campaign2">
+			<img src="04.jpg">
+		  </div>
+	  </div>
+	  <div class="slide">
+		<div class="small_campaign_pic small_campaign3">
+			<img src="03.jpg">
+		</div>
+	  </div>
+	  <div class="slide">
+		<div class="small_campaign_pic small_campaign4">
+			<img src="02.jpg">
+		</div>
+	  </div>
+	</div>
+	</div>
+	
+	<script>
+		$(document).ready(function(){
+			// 计算slick的数量
+		  var slick_num = $(".your-class .slide").length;
+		  
+		   var $campaign = $('.your-class').slick({
+			  slidesToShow: 1,
+			  slidesToScroll: 1,
+			  arrows: true,
+			  variableWidth:true,
+			  centerMode: true
+			});
+			var $small_campaign = $('.my-class').slick({
+			  slidesToShow: 5,
+			  slidesToScroll: 1,
+			  dots: false,
+			  slickGoTo: 3,
+			  focusOnSelect: false,
+			  draggable: false,
+			  variableWidth:true,
+			  infinite: false, 
+			  prevArrow: '<button type="button" data-role="none" class="small-slick-prev" aria-label="Previous" role="button" style="display: block;">Previous</button>',
+			  nextArrow: '<button type="button" data-role="none" class="small-slick-next" aria-label="Previous" role="button" style="display: block;">Next</button>'
+			});
+			reset_campaign_margin2();
+			$(".my-class .slick-slide").click(function(){
+				dir = ($(this).attr('data-slick-index')*1+slick_num)%slick_num
+				current = $(".your-class .slide.slick-current").attr('data-slick-index')*1
+				if (dir == 0 && current == slick_num - 1){
+					$campaign.slick('slickNext');
+				}else if(dir == slick_num - 1 && current == 0){
+					$campaign.slick('slickPrev');
+				}else{
+					$campaign.slick('slickGoTo', dir);
+				}
+			})
+			// swipe 无效不知道为什么
+			$('.your-class').on('beforeChange', function(event, slick, currentSlide, nextSlide){
+				reset_campaign_margin2(nextSlide);
+			});
+			//$('.your-class').on("swipe", function(event, slick, direction){
+			//	console.log(direction);
+			//})
+			
+		});
+		
+		// 控制不够宽度不够的图片重新左右对齐，如果只居中到了左右的时候就不好看了
+		function reset_campaign_margin(){
+			$(".your-class .slide").find("img").css("margin", "auto");
+			$(".your-class .slide.slick-current").next().find("img").css("margin-left", "0");
+			$(".your-class .slide.slick-current").prev().find("img").css("margin-right", "0");
+		}
+		
+		function reset_campaign_margin2($current){
+			if(typeof($current) == "number"){
+				$current = $(".your-class .slide[data-slick-index="+$current+"]")
+			}else{
+				$current = $(".your-class .slide.slick-current")
+			}
+			// 因为有cloned的存在，单纯取上一个下一个会有问题，所以设置一个自定义的属性，把有这个自定义属性的全做margin_reset
+			next_attr = $current.next().children().attr("myattr")
+			prev_attr = $current.prev().children().attr("myattr")
+			$(".your-class .slide").find("img").css("margin", "auto");
+			$("[myattr="+next_attr+"]").find("img").css("margin-left", "0");
+			$("[myattr="+prev_attr+"]").find("img").css("margin-right", "0");
+		}
+	</script>
+</body>
+
+</html>

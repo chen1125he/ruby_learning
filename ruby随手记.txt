@@ -303,3 +303,28 @@ p.banner_pic img {
 	https://ruby-china.org/topics/16187
 108.假删除
 	
+109.Exception:
+	Interrupt
+	NoMemoryError
+	SignalException
+	ScriptError
+	StandardError
+	SystemExit
+	总共七种rescue => e  默认的是StandardError，如果不指定可能会捕捉不到异常
+	问题来自slips下面excel的上传
+110.
+	route配法
+	resources :posts do 
+		match :css, :via => [:post] #=> post_css_path
+		collection do 
+			match :js, :via => [:post] #=> js_posts_path
+		end
+	end
+111.用字符器调用方法
+	try("method".to_sym)
+	
+112.上传“false”字符串赋值给对象Bool类型的变量会自动转化成false
+113.
+	Can't verify CSRF token authenticity
+	需要用rails的form帮助方法，或者skip验证
+	  skip_before_filter :verify_authenticity_token, only: [:is_auto_selecting]
