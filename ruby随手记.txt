@@ -328,3 +328,10 @@ p.banner_pic img {
 	Can't verify CSRF token authenticity
 	需要用rails的form帮助方法，或者skip验证
 	  skip_before_filter :verify_authenticity_token, only: [:is_auto_selecting]
+	  
+114.在服务器上面，如果有多个服务器，请求服务器A生成一个文件，然后去下载这个文件却请求到了B，会导致路径错误的问题。这个可以设置文件夹共享
+
+115.什么时候会在db里面存空值，什么时候会存null呢？
+116.在多表单联合验证的时候，单个的表单验证可能通过，但联合验证通不过，给这个联合验证的多个表单添加错误样式，可以在添加联合验证错误时手动add errors(单个表单)，然后再想办法去掉错误信息就ok了。
+	对于有些错误不想显示full_errors，可以把字段的名设置成空串，就可以不显示字段名了
+
