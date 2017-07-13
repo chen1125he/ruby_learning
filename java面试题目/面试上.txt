@@ -1,0 +1,45 @@
+http://www.importnew.com/22083.html
+
+5.s1+1结果会是int，赋值给short会有问题
+	s1 += 1隐含一个强制转换
+6.没有goto但是是保留字
+7.基本类型有包装类型(引用类型)
+	Integer a = 3;
+	int b = 3;
+	a == b // true
+	Integer f1 = 100, f2 = 100, f3 = 150, f4 = 150;
+	如果 -128 <= Integer <= 127那么
+	f1 == f2 //true
+	f3 == f4 //false
+8.&&和&/|和||
+	&按位与
+	&&短路运算(炒鸡强大)
+	
+9.栈，堆，静态区
+	一个基本数据类型的变量、对象的引用还有函数调用的现在都使用栈空间;通过new关键字+构造器创建的对象放在堆空间;字面变量如直接书写的100，'hello'放在静态区
+	String str = new String("Hello");
+	str栈/new String()堆/"Hello"静态区
+10.Math.floor()向下取整
+	Math.round()四舍五入其实就是floor(num+0.5),负数也是+0.5
+	ceil()是不小于它的最小整数
+11.switch
+	java5(不包括)前只能是byte short char int
+	java5引入枚举
+	java7可以String
+12.用最有效率的方法计算2*8
+	2 << 3 => 2 * (2 ^ 3)
+	
+13.数组没有length()方法，有length属性
+	String有length()方法
+	
+14.跳出多重循环
+	OK:
+	for(...){
+		for(...){
+			if(..){
+				break OK;	//标记设置在循环体开头，跳出设置的循环体
+			}
+		}
+	}
+	
+15.构造器不能被继承，因而也不能被重写，但可以被重载
