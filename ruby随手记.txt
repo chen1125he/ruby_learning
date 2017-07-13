@@ -334,4 +334,81 @@ p.banner_pic img {
 115.什么时候会在db里面存空值，什么时候会存null呢？
 116.在多表单联合验证的时候，单个的表单验证可能通过，但联合验证通不过，给这个联合验证的多个表单添加错误样式，可以在添加联合验证错误时手动add errors(单个表单)，然后再想办法去掉错误信息就ok了。
 	对于有些错误不想显示full_errors，可以把字段的名设置成空串，就可以不显示字段名了
+117.定义在$(function(){})里面的函数，变量在console里面访问不到
+118.判断AvtiveModel的值是否改变
+	previous_changes()
+	changes()
+	...
+	
+	还有个after_save和before_save等等事件
+	
+119.在Model里面定义一个enum的时候
+	enum room_type = {:washitsu => 1, :youshitsu => 2...}
+	ROOM_TYPE = {:washitsu => "和室", :youshitsu => "洋室"}
+	这里面对于room_type属性1和"washitsu"是等价的，获取到的值也是"washitsu"
+	可以用Model.room_types来获取这个enum
+120.对于路由配置，如果有冲突的话，会优先进写在前面的那条
+	FreePage.all.try(:each) do |fp|
+		get fp.key, to: 'free_pages#show'	//这里可以通过request.url来找到那个key
+	end
+	也可以写
+	get ':key', :to => 'free_pages#show'	//这里更简单，不过会匹配更多的不知道来源的key吧
+	【前台free_pages的标题或许可以用js来改】
+121.判断一个数组是否全为空的时候可以用arr.all?(:&blank?)(或者传block)也可以arr.any?(:&present?)
 
+122.导出/读取excel
+
+	Roo
+		xlsx = Roo::Excel.new(file)
+	xlsx
+		p = Axlsx::Package.new
+		p.workbook do |wb|
+			styles = ExcelUtil.get_local_product_style(wb)
+			styles = wb.styles
+			styles.fonts.first.name = "メイリオ"
+			styles.fonts.first.sz = 11
+			#http://www.rubydoc.info/github/randym/axlsx/Axlsx%2FStyles%3Aadd_style
+			# 这些属性都是数字
+			head_orange_default = styles.add_style b: true, bg_color: 'FFC000', border: {color: '000000', style: :thin  }, alignment: {vertical: :center, wrap_text: false, shrink_to_fit: true}
+			
+			grey_blank = styles.add_style b: true, bg_color: 'BFBFBF', alignment: {horizontal: :center, vertical: :center, wrap_text: false, shrink_to_fit: true}
+			grey_title_right = styles.add_style b: true, bg_color: 'BFBFBF', border: {color: '000000', style: :double, edges: [:bottom]    }, alignment: {horizontal: :center, vertical: :center, wrap_text: false, shrink_to_fit: true}
+			grey_title_left = styles.add_style b: true, bg_color: 'BFBFBF', border: {color: '000000', style: :double, edges: [:bottom]    }, alignment: {horizontal: :center, vertical: :center, wrap_text: false, shrink_to_fit: true}
+
+			border = styles.borders[styles.cellXfs[grey_title_right].borderId]
+			border.prs << Axlsx::BorderPr.new(:name => :left, :color => Axlsx::Color.new(:rgb => '000000'), :style => :thin)
+
+			border = styles.borders[styles.cellXfs[grey_title_left].borderId]
+			border.prs << Axlsx::BorderPr.new(:name => :right, :color => Axlsx::Color.new(:rgb => '000000'), :style => :thin)
+			
+			
+			
+			wb.add_worksheet(:name => '') do |sheet|
+				sheet.add_row([], :style => style/[style1, style2])
+				sheet.column_widths width1, width2
+				
+				# 冻结窗口
+				sheet.sheet_view do |vs|
+				  vs.pane do |pane|
+					pane.state = :frozen_split
+					pane.y_split = 1
+				  end
+				end
+			end
+		end
+		p.serialize file_path
+		
+	rubyXL
+		workbook = RubyXL::Parser.parse(File.join(save_dir, file_name))
+
+      worksheet = workbook[1]
+
+      categories.each_with_index do |category, index|
+        worksheet.add_cell(index+2, 0, category.try(:code_eight))
+        worksheet.add_cell(index+2, 1, category.category_name_rank_with)
+      end
+      send_data workbook.stream.string, :filename => encode_file_name('地域納入会社?納入商品事前申請_テンプレート.xlsx'), disposition: 'attachment'
+123.send_data在发送完数据之前会把文件锁起来，而send_file则不会，如果想在发送完文件就删除，那用send_data好
+	File.open(file, 'r') do |f|
+		send_data f.read...
+	end
