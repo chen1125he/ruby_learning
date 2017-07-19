@@ -401,7 +401,7 @@ p.banner_pic img {
 	rubyXL
 		workbook = RubyXL::Parser.parse(File.join(save_dir, file_name))
 
-      worksheet = workbook[1]
+      worksheet = workbook[0]
 
       categories.each_with_index do |category, index|
         worksheet.add_cell(index+2, 0, category.try(:code_eight))
@@ -412,3 +412,21 @@ p.banner_pic img {
 	File.open(file, 'r') do |f|
 		send_data f.read...
 	end
+	
+124.样式覆盖的优先级
+	继承时，应用最近祖先的样式
+	直接指定的样式覆盖继承的样式
+	直接指定的发生冲突时权值高的覆盖权值低的
+		标签选择器	1
+		类选择器	10
+		ID选择器	100
+		内联样式	1000
+		伪元素(:first-child等)	1
+		伪类(:link等)	10
+		比如”#nav .current a”的权值为100 + 10 + 1 = 111。
+	!important可以看做是万不得已的时候，打破上述四个规则的”金手指”。如果你一定要采用某个样式属性，而不让它被覆盖的，可以在属性值后加上!important，以规则四的例子为例，”.byline a {color:red !important;}”可以强行使链接显示红色。大多数情况下都可以通过其他方式来控制样式的覆盖，不能滥用!important。
+	
+125.上传文件到测试服务器
+	先上远程，用远程的winscp连
+	192.168.200.79 其他设置基本用默认就好
+	ec/123456
