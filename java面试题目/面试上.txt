@@ -107,3 +107,61 @@ http://www.importnew.com/22083.html
 	
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
 	sdf.format(new Date());
+	
+42.打印昨天的当前时刻
+	Clendar cal = Clendar.getInstance();
+	cal.add(Calendar.DATE, -1);
+	cal.getTime();
+43.java和javascript
+	java代码在执行前必须经过编译，js不需要经过编译，直接由浏览器解释执行
+	强类型变量和弱类型变量
+	
+44.断言？？
+45.Error和Exception
+	Error表示系统级的错误和程序不必处理的异常，恢复很困难的一种情况，如内存溢出，程序不可能处理这样的问题(递归公式和收敛条件)
+	Exception是可以捕捉到的异常，是可以处理的异常
+46.try{}里面return，而finally{}仍然会执行，在finally里面修改返回值是可以的，但这样。。。不好(龌龊)
+47.try里面包含可能有异常的代码块，catch可以声明多个捕捉不同类型的异常，finally是最后一定会执行的
+	throw是写在代码块里面，手动抛出的
+	throws出现在方法函数头，如果有制定的异常会直接抛出，由调用此函数的代码去处理
+48.运行时异常表示虚拟机的通常操作中可能遇到的异常，只要程序设计得没有问题就不会发生，受检异常跟程序运行的上下文环境有关，即使话程序设计无误，仍可能因使用的问题面引发
+49.常见的异常
+	ArithmeticException(算术异常)
+	ClassCastException(类转换异常)
+	IllegalArgumentException(非法参数异常)
+	IndexOutOfBoundsException(下标越界异常)
+	NullPointerException(空指针异常)
+	SecurityException(安全异常)
+50.final 修饰类，方法，属性
+	finally通常放在try{}catch{}后面表示最后一定要执行的代码块
+	finalize：Object类中定义的方法，是一个垃圾收集器，用来销毁对象用的
+51.略
+52.List Set是继承自Collection接口，Map不是
+	Set存储的零散的元素且不允许有重复元素，List是线性结构的窗口，适用于按数值索引访问
+53.ArrayList, Vector, LinkedList
+54.Collection是一个接口(Set List的父接口), Collections是一个工具类提供了一系列静态方法来窗口操作，包括对容器的搜索，排序和线程安全化
+55.List,以特定索引来存取值，可以重复。Set不能存放重复元素(equals()判断)。Map保存键值对(key-value pair)映射，映射关系可以是一对一或者多对一
+56.TreeSet方法要求存放的对象所属的类必须实现Comparable接口(实现conmareTo(),里面定义实现规则)，插入元素时会回调该方法，比较元素大小
+	Collections.sort(list, new Comparator<Student>(){
+		public int conpare(Student s1, Student s2){
+			return s1.getName.conpareTo(s2.getName());
+		}
+	});
+57.
+...
+70.读取文件
+	try(FileReader fr = new FileReader(filename)){
+		try(BufferReader br = new BufferReader(fr)){
+			while((line = br.readLine()) != null)
+		}
+	}catch(Exception ex){
+		
+	}
+71.列举文件夹下面所有的文件
+	File f = new File("/Users/Hao/DownLoads");
+	for(File temp : f.listFiles()){
+		if(temp.isFile()){
+			syso(temp.getName());
+		}
+	}
+72.
