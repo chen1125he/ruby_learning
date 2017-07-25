@@ -1,0 +1,4 @@
+1.final方法可以被子类继承但不能被修改。
+2.有抽象方法，一定是抽象类
+3.instanceof 判断一个对象是否是一个指定类型
+4.switch byte/short/int/char/String(java se7)

@@ -165,3 +165,84 @@ http://www.importnew.com/22083.html
 		}
 	}
 72.
+...
+75.
+public Class DBHelper{
+	public Connection conn = null;
+	public preparedStatement pst = null;
+	public DBHelper(String sql){
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:musql://127.0.0.1/student", user, password)
+			pst = conn.prepareStatement(sql)
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	public void close(){
+		try{
+			this.conn.close();
+			this.pst.clost();
+		}catch (SQLException e){
+			e.printStackTrace();
+		}
+	}
+}
+	dbh = new DBHelper(sql);
+	ResultSet rs = dbh.pst.executeQuery();
+	rs.getInt("id")/getInt(1)
+76.Pst接口代表预编译的语句，可以减少sql的编译错误，并增加sql安全性(减少sql注射攻击的可能);可以附带参数避免了拼接的麻烦和不安全;批量处理sql或者频繁执行相同的查询时，可以明显提升性能
+
+77.jdbc提升读取性能 ResultSet对象的setFetchSize()方法指定抓取的记录数(空间换取时间)
+	提升更新性能PrepareStatement构建批处理
+78.连接池的作用：创建连接和释放连接都需要很大的开销(尤其数据库不在本地时，建立连接需要tcp三次握手，释放连接需要tcp四次握手)
+	所以为了提升性能需要建立一些链接池，需要时从连接池获取然后归还不关闭
+		java开源数据库连接池有C3P0\Proxool\DBCP\BoneCP\Druid
+79.DAO(Data Access Object)
+
+80.事务的ACID指的是
+	Atomic(原子性):同时实现，一个失败全部失败
+	Consistent(一致性):事务结束后系统状态是一致的
+	Isolated(隔离性):并发执行的事务彼此无法看到对方的中间状态
+	Durable(持久性):事务完成后所做的所有改动都会被持久化，即使发生问题
+	
+	脏读：A事务读取B事务尚未提交的数据
+81.jdbc事务
+	try{
+		conn.setAutoCommit(false)
+		...
+		conn.commit()
+	}catch(SQLException e){
+		..
+		conn.rollback();
+	}finally{
+		conn.setAutoCommit(true);
+	}
+82..
+83.正则表达式用途
+	需要匹配具有某些规则的字符串，正则表达式就是用来描述这些规则的
+84.matches()、replaceAll()、replaceFirst()、slip()
+	Pattern p = Pattern.compile(".*?(?=\\()")
+	
+85.获得一个类的类对象
+	.class 例如String.class
+	.getClass() 例如 "hanhan".getClass()
+	Class.forName() 例如 Class.forName("java.lang.String")
+...
+89.面向对象的六原则一法则
+	单一职责原则：一个类只做它应该做的事情，即高内聚，因为专注所以专业嘛
+	开放原则：软件实体应该对扩展开放，对修改关闭
+	接口隔离原则：接口要小而专，不能大而全
+	迪米特法则：最少知识原则，一个对象应该对其他对象有尽可能少的了解，低耦合。
+..
+91.单例方法
+	将构造器私有，不允许外界通过构造器创建对象，通过公开的静态方法，返回类的唯一实例
+	public class Singleton{
+		private Singleton(){}
+		private static Singleton instance = new Singleton();
+		public static Singleton getInstance(){
+			return instance;
+		}
+	}
+92.UML
+	统一建模语言
