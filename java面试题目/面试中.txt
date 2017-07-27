@@ -1,0 +1,58 @@
+http://blog.csdn.net/jackfrued/article/details/44931137
+96.Servlet
+	用户发送一个请求，Servlet调用service()方法对请求进行响应，service()方法对请求的方式进行匹配，选择调用doGet(), doPost()方法，然后再进入对应方法的逻辑层实现对客户的方法进行响应
+	生命周期 初始化init() 响应客户请求service() 终止destroy()    getServletInfo()  getServletConfig()
+97....
+98.转发(forward)和重定向的区别
+	request.getRequestDispatcher('page.jsp').forward(request, response)
+	response.sendRedirect('page.jsp')
+	转发是在服务器磁芯完成的，重定向是在客户端完成的。
+	转发是同一次请求，重定向是两次不同的请求
+	转发不会改变浏览器的地址，重定向会
+99.jsp的内置对象
+	request 封装客户端的请求
+	response 封装服务器对客户端的响应
+	pageContent 通过改对象可以获取其他对象
+	session 封装用户会话的对象
+	application 封装服务器运行环境的对象
+	out 输出服务器响应的输入流对象
+	config Web应用的配置对象
+	page JSP页面本身(相当于java中的this)
+	exception 封装页面招聘异常的对象
+100.get和post的区别
+	get是用来从服务器上获得资源，而post是用来向服务器提交数据
+	get将参数写在链接中，post放在http协议的请求头或者消息体中
+	get传输数据受到url长度限制，post可以传输大量数据
+	get会把参数显示在址栏上，相对不够安全
+	
+..
+102.Servlet是一个特殊的java程序，运行于服务器的jvm中，能够依靠服务器的支持向浏览器提供显示内容
+	JSP本质上是Servlet的一种简易形式，JSP会被服务器处理成一个类似于Servlet的Java程序，可以简化页面的生成
+	在MVC模式下，JSP主要充当view，Servlet更多地是作为controller
+103.四种作用域包括page, request, session, application
+	page表示一个页面相关的对象和属性
+	request表示与web客户机发出的一个请求相关的对象和属性
+	session代表与web服务器建立的一次会话相关的对象和属性，跟某个用户相关的数据应该放在用户自己的session中
+	application代表与整个web应用程序相关的对象和属性，跨越整个web应用程序，包括多个页面，请求和会话的一个全局作用域
+	
+104.
+105.会话跟踪，区分不同的用户
+	1.url重写，将用户的用户放置在url中
+	2.设置表单隐藏域
+	3.cookie
+	4.HttpSession
+106.过滤器
+107.监听器
+108.web,xml中可以配置哪些内容
+	监听器(listener)，过滤器(filter)，Servlet，相关参数，会话超时时间，安全验证方式，错误页面等
+109.jstl el
+	<c:if>, <c:choose>, <c:when>, <c:otherwise>, <c:forEach>
+110.使用标签库的好处
+	分离jsp页面的内容和逻辑，简化web开发
+	开发者可以创建自定义标签来封装业务逻辑和显示逻辑
+	标签具有很好的可移植性，可维护性和可重用性
+	避免了对scriplet的使用
+	
+http://blog.csdn.net/jackfrued/article/details/44931161
+面试下
+	126.

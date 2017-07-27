@@ -1,0 +1,12 @@
+http://blog.csdn.net/guo13313/article/details/70666453?foxhandler=RssReadRenderProcessHandler 开启redis-server提示 # Creating Server TCP listening socket *:6379: bind: Address already in use--解决方法
+http://www.cnblogs.com/richard1234/p/3829074.html Sidekiq in Rails
+http://blog.csdn.net/remote_roamer/article/details/16832195 Sidekiq在Rails中的用法(详细的配置)
+http://blog.csdn.net/fiwrc/article/details/73412258 redis 安装后报错creating server tcp listening socket 127.0.0.1:6379: bind No error
+http://www.cnblogs.com/lannoy/p/5844439.html redis的密码设置（windows与linux相同）
+http://blog.csdn.net/lissdy/article/details/16970111 sidekiq异步处理任务
+
+配置在redis.xxx.conf里面 http://www.cnblogs.com/tommy-huang/p/6240083.html
+
+redis-server.exe redis.xxx.conf 可以启动服务
+config下面需要有sidekiq.yml
+然后在rails的根目录下面还要启动 bundle exec sidekiq
