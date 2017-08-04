@@ -447,3 +447,17 @@ http://blog.csdn.net/sunset108/article/details/48956101
 130.include其他文件里面的module的时候出现uninitialize
 	require_relative 'file_name'
 	module应该和文件名统一 module MyMod => my_mod.rb
+131.使用ActiveSupport::Concern(需要require 'active_support')
+	module MM
+		extend ActiveSupport::Concern
+		included do 
+			# 可以在这里面写类方法
+			extend xxx
+			# 也可以 
+			class_eval do 
+				def self.method 
+					
+				end
+			end
+		end
+	end
