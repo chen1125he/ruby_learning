@@ -431,3 +431,19 @@ p.banner_pic img {
 	192.168.200.79 其他设置基本用默认就好
 	ec/123456
 126.HTML5规范自定义特性需要加上data-前缀
+
+http://blog.csdn.net/sunset108/article/details/48956101
+127.class 中include可以将module中的方法变为实例方法，extend可以将module中的方法变为类方法
+	module中可以定义self.extended(base)可以在被extended的时候执行base是extend的类
+					self.included(base)相同
+128.同时引入实例方法和类方法
+	module里面写module
+	可以include module::module
+	也可以self.included(base)
+			base.extend ClassMethods
+			base.send :include, InstanceMthods
+		  end
+129.可以用include实现mix-in(多重继承)
+130.include其他文件里面的module的时候出现uninitialize
+	require_relative 'file_name'
+	module应该和文件名统一 module MyMod => my_mod.rb
