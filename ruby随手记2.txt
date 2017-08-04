@@ -1,0 +1,309 @@
+0.rubymine添加sdk: file => Settings => 搜索sdk
+1.	String类中的[]或slice取string中的一部分) 取的值是[a,b)另外如果不到b则就取到所有长度,如果参数是(3..6)就是[4,7]
+2.	<<和push方法都是将一个对象放到数组中，包括数组对象
+3.	做插件的登出操作时，不是用@user_session.destroy在数据库里做删除，而是清除session，用current_user_session.destroy
+4.	当做某些操作（保存更新之类）失败用render时，只要render  ‘page’
+而不用像html里面一样用render :partial => ‘page’ 傻傻的
+5.	numericality: {only_integer: true, message: '年龄必须为整数'}
+only_integer只是numericality的一个属性不能像numericaty一样单独使用
+6.	select("post", "person_id", Person.all.collect {|p| [ p.name, p.id ] }, { include_blank: true })
+7.	有的值只能在一个页面使用，而对于同样想使用的同一个框架集的页面也想用可以用content_for
+Content_for: questions_count do 
+	@question.length if @question
+	0 unless @question
+End 
+调用时用 yield :question_count
+	8．	  允许验证为空用属性allow_blank
+	9.	  数据库回滚，对象不回滚。
+	9.	  model.send(name)根据字符串的字段名获取模型的值
+	11.	  在Array里面有个collect方法，可以用块对其本身的值做出改变生成一个新的Array
+	12.	  图片上传预览
+		function preview(file)
+    {
+        var prevDiv = document.getElementById('preview');
+        if (file.files && file.files[0])
+        {
+            var reader = new FileReader();
+            reader.onload = function(evt){
+                prevDiv.innerHTML = '<img src="' + evt.target.result + '" />';
+                alert(evt.target.result)
+            }
+            reader.readAsDataURL(file.files[0]);
+        }
+        else
+        {
+            prevDiv.innerHTML = '<div class="img" style="filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src=\'' + file.value + '\'"></div>';
+        }
+}
+13.ApplicationController.helpers.options_for_select(products)可以把数组转化成option
+14 <%=select_tag 'product[brand_id]',options_from_collection_for_select(@brands, "id", "name", @product.brand_id)%>默认选中的select_tag
+15find()Array和where():ActiveRecord_Relation返回的结果类型不同，@xxxs的类型不不同paginate要用的是:ActiveRecord_Relation类型的这会出现undefined method `total_pages'
+Paginate与等号有空格也会出现
+
+16.暂且先认为before_action和before_filter是一个意思，同一个controller出现多个时他们是有执行的先后顺序的
+before_action :login_filter
+  before_action :set_user_message, only: [:edit, :update]
+17.表单提交事件<form  …  onsubmit=’return true/false>
+18.标签嵌套不当似乎会造成按钮的失效？form标签应当在table的外面
+19. raise ActiveRecord::Rollback是让transaction后面的代码都不执行而不是整个后面的代码都不执行
+20.关于flash的提示消息不消失，基本都是出现在render中，flash的生命周期在一次跳转(redirect)之间，而render不算，所以在下一次跳转之前flash中的内容任然存在，这时候就用flash.now
+21.设置关联排序
+		has_many :pictures,->{order(:src => :desc)}, as: :owner, :dependent => :delete_all
+22.rails对html有逸出，即任何html输出如<%= ‘<input />’%>会变成&lt;input /&gt;
+		如果完全允许，可以<%=raw ‘<input />’%>会输出成<input />(或者用html.html_safe)
+		或者添加白名单用sanitize 
+		https://ihower.tw/rails4/actionview-helpers.html
+23.***_ before_type_cast可以把数据转换成它未转换之前的样子，比方说某表单数据002会被赋值给数字类型变成2，用这个方法可以变成002
+24.skip_before_action/filter 可以跳过在controller父类中定义的before_action，让某个before_action的方法不执行，比如在user_session中的new和create就不能用before_action就用skip_before_acrion :login_filter, except: [:destroy]跳过
+25.defined?(value)中的defined?是一个运算符号会返回value的类型名(method/local-variable等)？或者nil
+26.@model.try(:method).try(:method2),可以避免method/method2 undefied for nilClass
+当不存在会返回空值
+27. map可以遍历hash的嘛，怎么忘记了
+28.Array的sort方法
+msg_arr = msg_arr.sort do |key_a, key_b|
+        value_a = hash_field_orders[key_a[0].to_sym].blank? ? max : hash_field_orders[key_a[0].to_sym]
+        value_b = hash_field_orders[key_b[0].to_sym].blank? ? max : hash_field_orders[key_b[0].to_sym]
+        value_a <=> value_b
+      end
+29.gsub方法可以传个块"hello".gsub(/./) {|s| s.ord.to_s + ' '}
+	30.redirect_to Hash (action: :index/’action’ => ‘index’/:adtion => ‘index’)
+31.request.remote_ip
+32.有一个number_with_x的helper方法
+33.render layout: ‘layout’/false (false是取消布局)
+34.通常会把js文件写在文件下边，css写在文件上边，这样不会导致文件加载时间过长网页无法显示的问题
+35.render partial: ‘products’, locals: {product: product}(,:object => @products,不建议这么用会导致局部模板与父模板耦合，重用性降低)
+	<%= render :partial => @customer %>
+#相当于
+<%= render :partial => "customer", :object=>@customer %>
+	Render :file => ‘404.html’, layout: false/true, status: 404 可以这样用
+36.form_for :model, url: this_is_url, method: :post
+37.设置按钮的 data: {:’disable_with’ => ‘请稍等…’}可以避免提交按钮被重复点击,可以在action中加个sleep 3让它停顿3秒
+38.=~匹配的是位置以0开始，返回第一次匹配的位置
+	Match返回一个matchdata类
+39.window.location = window.location即重载当前页面，也就是刷新当前页面，对session失效有用，使用ajax操作
+40.where查询里面不要把hash写在[]里面像这样["code" => custom_column_code, "event_id" => self.event_id, "type" => 2]这样会有错误但不会报错好像
+
+41.ime-mode: disable可以禁止表单输入中文，全角等，输入法都切换不了全角
+
+42.form 里面加了data-remote,即form_tag里面有remote : true时这个表单就是ajax请求，它不会跳转页面，这时可以进入跳转到的action的js.erb文件中执行js代码，像视图一样，自动进入???如果出现了InvalidAuthenticityToken时，加authenticity_token: true,不过问题好像又不在这里，因为即使这样做了，它请求的依然是html，即会造成页面的跳转，不是ajax请求，这时在application.js中写上
+//= require jquery
+//= require jquery_ujs
+才行，我的错误好像是出现在还写了require jquery.min
+43.send_file向页面发送文件,应该是类似于render的东西，render当前页面，然后发送文件
+Send_file(‘file_path’, filename: ‘filename’)
+44.render一个action像是render它的模板，并不会去走它里面的方法
+45. src=('|"|)(.+\.(jpg|png|gif))(\1)  分组1中的意思为 单引号、双引号或者空（或者空超棒的）
+46.rails里面json不用转换，已经直接成hash的样子了（不用eval）可以用data[key]
+也可以用$.each(data, function(key, value){
+	去遍历
+})
+47.respond_to do |format|
+	#format.js就是render js: 不可以render  json
+	#而且这和ajax的 dataType是相对应，否则响应失败
+	#另外，即使是js，success的function(data)中的data也有值，即render的js,是字符串类型
+ End
+48.File.join是加一层路径如File.join(‘c:/file’, ‘file_path’) => ‘c:/file/file_path’
+49.rails手动设置延迟sleep(5s)
+50.在用js里面会有个奇怪的现象，本来用来用来显示黑屏的loadding放在ajax两边竟然没有效果，而放在ajax里面才有用，为什么呢？！
+51.jq中的each方法，要跳出用return false => break, return true => continue
+52.$(document).ajaxStop/Start()判断当ajax执行完或者刚开始时执行某方法，算有用的吧
+53. <%= favicon_link_tag 'icon/00010.gif'%> 添加网页标签的图标
+	最后会生成<link rel=”shortcut icon” type=”image/x-icon” href=/assets/icon/00010-balabala.gif>
+54.在form_for里面要穿文件的时候可以用:html=>{‘multipart’ => true}
+55.如果在一个controller里面带了new比方说EnergencyNewController
+	那么它的路由会变化index: admin_energency_news_index_path
+						New: new_admin_energency_news_path
+						Edit: edit_admin_emergency_news_path
+						Delete/show/Update: admin_emergency_news_path
+56.设定验证满足条件触发：
+	指定方法 if: :method
+			validates :card_number, presence: true, if: :paid_with_card?
+	指定字符串if: :’string’
+			validates :surname, presence: true, if: "name.nil?"
+	指定块 if: Proc.new{ |a| a.value.present?}
+			validates :display_order, :numericality => true, if: Proc.new{ |order| order.display_order.present?}
+57.如果某个数组在循环中删掉了自身某个元素，下一次循环时后面的元素索引会依次减1，长度也会减一，可能会导致循环中断（如果是在循环到倒数第二个元素时删除，最后一个元素不会循环到）这个时候可以再new一个一样的
+58.this.form.action可以获取当前表单的action
+59.try方法可以给它里面的方法加个参数
+	right_banner.try(:right_banner_picture).try(:image).try(:url, :thumb)其中url是方法:thumb是参数
+60.css里面有的背景图片是被集合在一张图片上的这时候可以用background-position来移动
+	-mpx, -npx表示向左向右
+61.ruby里面如果需要判断是否为空再做操作的话可以用
+	If  xxxx.blank?
+	# 这里什么都不写
+	Elsif xxxx
+62.关于直接使用事件和bind事件
+	有时候bind一个的函数的时候会多次运行，还不知道是为什么，可能多次绑定了，这时候可以解绑重新绑定，比如说$(‘#id’).unbind(‘click’).bind(‘click’, function(){})
+	$(‘.class’).focus(function(){})
+	$(’.class’).bind(‘focus click’, data, function(){})
+		里面可以用unbind取消绑定事件
+		而直接使用事件是不能取消绑定事件的(即使是去掉用来绑定的class也不能去掉事件)，用bind的好处大概在这里吧
+	$(‘.class’).bind({event: function, event: function})
+63.对于按某个字段排序，有的条目此段为空会默认排在前面，如不想可以
+	Mysql: Order by if(isnull(column), 1, 0), column就会将空值默认置后默认里面的是 0, 1
+	Oracle: order by column nulls last/first
+64.jq选择兄弟结点 $(this).siblings() 
+	Prev() 上一个兄弟 prevAll()前面所有兄弟 next()下一个 nextAll()后面所有
+65.sql中district用于过滤相同的值
+68.model.attributes(hash)可以用来加值
+69.@model.validates_numericality_of 可以这样在方法里面调用验证方法，这样会直接将这个验证产生的错误信息传送到里面
+70.simple_form_for @model, {url: '', html:{id: ''}}
+	f.input ... as: :integer可以添加一个type=number
+	wrapper的config可以看rails一些插件里面的文档
+71.csv_data = CSV.generate do |csv|
+   csv << []
+   
+   end
+   NFK.nfk('-s', csv_data)
+72.send_data(csv, type: 'text/csv', filename: encode_file_name("**.csv"))
+73.symbollize_keys! 把key转换成sym，只要key响应to_sym
+74.路由中member和collection的不同
+	member do 
+		get 'perview' # 生成的路由是带类的id的， 如photos/1/preview  路由就是preview_photos_path(@photo)
+	end
+	
+	:member 是对单个实体进行操作，创建路由格式是： /:controller/:id/:your_method 
+	:collection 是对实体集合进行操作，创建路由格式是： /:controller/:your_method 
+	:new 是新建一个实体，创建路由格式是： /:controller/:your_method/new
+	
+	map.resources :users, :collection => { :rss => :get } 
+	map.resources :users, :member => { :profile => :get } 
+	map.resources :users, :new => { :draft => :get } 
+	第一行创建的路由是：/users/rss 
+	第二行创建的路由是：/users/1/profile 
+	“1”就是user_id，我们需要知道用户ID才能得到用户的profile. 
+	第三行创建的路由是：/users/new/draft
+	*member创建的路由，帮助方法最后没有s
+	
+75.Model.where(conditions).pluck(:id, 'models.name', 'model_parents.name') do |id, m_name, mp_name|
+		[id, m_name, mp_name]
+	end
+	
+76.pdf下载
+	html = render_to_string template: "supplier_category_pos_codes/pos_code_pdf", encoding: 'UTF-8'
+	pdf = PDFKit.new(html)
+	
+	send_data pdf.to_pdf, :filename => encode_file_name('file_name.pdf'),
+							:type => 'application/pdf',
+							:desposition => 'outline'
+77.update_attributes是执行validation的， update_attribute不执行validation
+78.Barby 里面的to_png没有宽度，xdim能调宽度
+79.datepicker里面有个startDate属性设置从这天开始前面的都不能选择，对应有个endDate new Date()或者当前时间，new Date(full_year, month-1, date)，里面-1可以表示12月 getMonth()获取当前月-1,如果想获取这个月的最后一天可以用下一个月的，日期是0就可以了
+	ruby 获取一个月最后一秒Time.at(Time.new(2017, 12).to_i-1)
+80.bootstrap输入框组input-group里面可以在form-control 后面加span，class=input-group-addon 里面就可以同行加内容了
+81.Class Proc
+		class << self
+			# 写在这里面的赵都是类方法
+		end
+	end
+82.paperclip图片上传对图片的一些修改
+	http://railsfun.tw/t/paperclip/64
+	:styles => {:coutom => {'640x640>', :jpg}}
+	:convert_options => {
+		:custom => '-background white -gravity center -extent 640x640 -colorspace sRGB -quality 70'
+	}
+	#styles convert_options里面有的styles里面也要有才能生效
+	#background white是涂白
+	
+83.WdatePicker({ qsEnabled:false, dateFmt: 'yyyy-MM', isShowToday: false, isShowClear: false })可以只选择月份
+
+84.
+p.banner_pic {		//这样不会把图片左右拉伸，为什么呢
+  width: 300px;		
+  height: 100px;
+  text-align: center;
+  display: table-cell;	//加了这个属性可以让下面的图片垂直居中
+}
+p.banner_pic img {
+  vertical-align: center;
+}
+
+.banner_pic {		//这种却会
+  width: 300px;
+  height: 100px;
+  text-align: center;
+}
+.banner_pic img {
+  vertical-align: center;
+}
+85.使用modal的时候不能把modal的div写到模板里面去了，否则会失效，再次render的时候会消失不了
+
+86.union查询的时候可以把多张表联合起来，查询的结果按列distinct
+	select id as id from table1 where name like '11'
+	union
+	select id as id from table2 where name like '22'
+	find_by_sql()可以用任意一张表查询，结果是数组
+	Kaminari有一个方法Kaminari.paginate_array(@products, total_count: @products.length).page(params[:page]).per(Settings[:per_page])
+	可以用来对数组作分页
+	这里还缺少一个entry_name,可以在page_entries_info @products, entry_name: '' 里面指定
+87.关于数据库的索引，猜想可能是针对第一条sql会不一样的
+	LocalProducts的vendor_id/base_local_prodct_id加索引  根据搜索的字段组合成索引
+	
+88.用cmd登录mysql的时候 mysql -uroot -pchen5200he没有空格
+	mysqld --skip-grant-tables
+	
+89.如果一个select里面一个option也没有，那提交的时候将没有值会传上去，连空字符串都没有
+90.<button class="btn btn-info" type="submit" onclick="$('#pwi_search').attr('action','<%= search_admin_in_librays_path %>');"> 这个意思似乎是在表单中按enter的时候相当于click
+
+91.
+	@helper ||= Class.new do
+      include ActionView::Helpers::NumberHelper
+    end.new
+	
+92.tasks：
+	在项目的lib\tasks目录下面
+	写成文件.rake
+	namespace :namesp do 
+		desc 'description'
+		task task_name: :enviroment do 
+		
+		end
+	end
+	在项目下面执行rake就可以了rubymine在terminal下面 到项目目录 rake namesp:task_name
+	
+93.用remote提交表彰的时候如果 传输了文件，会立即产生ajaxComplete事件
+94.string类型的js如"<div></div>"只能用innterHtml，dom类型document.createElement('div')的才能用appendChild
+
+95.
+	rake pictures_process:campain_picture_update RAILS_ENV=production
+	rake pictures_process:right_banner_picture_update RAILS_ENV=production
+	测试服务器上执行rake
+	
+96.
+	在用js在页面加载完成的时候读取图片，发现图片的width/height值为0
+	因为window.onload和$(document).onload()=$()是不一样的，dom加载完图片还没加载完，所以获取的就会是0
+	上面说的似乎都没用
+	图片的onload事件要写在<img>里面才好生效： http://www.jb51.net/article/43003.htm
+97.
+	css引用文件<link rel="stylesheet" type="text/css" href="style.css">
+	js引用文件<script type="text/javascript" src="js.js">
+98.如果页面上有一个根据xx名字搜索的，名字中有空格的时候就要注意了，在网页上只会显示一个空格，实际上那个名字里面可能有几个空格，所以可能出现打了一个空格，而这个空格后面还跟了词就搜索不出结果了
+99.想让一个图片在一个容器内居中对齐，并且宽度自适应的话就要
+	box{display:table-cell;vertical-align:middle;text-align-center;}
+	img{max-width:box-width;max-height:box-height;}
+100.ruby里面的strftime是('%Y/%m/%d'), js里面的是new Date().Format('yyyy-MM-dd HH:mm:ss')
+101.Model.find_or_initialize_by()查询到一个Model或者初始化一个model
+102.在固定宽度的容器内如果文字和图片相交了，不妨把文字设置成overflow
+103.在保存失败render一个页面的时候，如果有什么值要通过@变量传递到页面上，需要在render 之前赋值
+104.bootstrap的colorpicker在js初始化的时候会生成两个div，在做ajax的时候注意不要去把这个初始化包含在了render里面造成多次初始化，否则会有colorpicker不消失的问题
+
+105.在div里面，如果想让边距有颜色，只能是padding了
+	给一个先给容器设置颜色再给加padding,margin是没有颜色的
+	
+106.一些插件引用到rails项目中的时候，需要分开放到几个文件夹
+	注意不能只单单引入js和css也可能有图片或者字体依赖的
+	像bootstrap，可能会有一些图标不能显示，就是少了字体文件
+	
+107.timestamps里面的时间如果不设置那么默认就是UTC的时间了
+	如果如果是东8区，那么存储的时间就会晚8个小时
+	需要做设置的话就设置时间
+	config.time_zone = 'Beijing'
+	config.active_record.default_timezone = :local
+	这里如果代码服务器和db服务器不在一起，那么时间会是代码服务器
+	https://ruby-china.org/topics/16187
+108.假删除
+	
+109.用了authlogic，写在登录的login表里面的验证如果出现translation missing: en.models
+	看看是不是写错了位置,应该是I18n.t("authlogic.error_messages.input_error")
+
+110.ActiveRecord.sample(num) 从里面取随机的几个，默认1
