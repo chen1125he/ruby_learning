@@ -462,3 +462,5 @@ http://blog.csdn.net/sunset108/article/details/48956101
 		end
 	end
 132.bootstrap的js和css可以定制，比方说只想使用datetimepicker 只要dropdown和sprites，不用下载整个的bootstrap
+133.mojinizer可以判断、转换日文的全角半角
+134.column = "str"可以匹配出数据库里面值为"str "的记录
