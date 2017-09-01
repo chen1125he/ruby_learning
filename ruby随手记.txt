@@ -464,3 +464,13 @@ http://blog.csdn.net/sunset108/article/details/48956101
 132.bootstrap的js和css可以定制，比方说只想使用datetimepicker 只要dropdown和sprites，不用下载整个的bootstrap
 133.mojinizer可以判断、转换日文的全角半角
 134.column = "str"可以匹配出数据库里面值为"str "的记录
+135.导入csv的时候，如果一列只有一个逗号，那它的值为nil而不是空字符串
+136.js中使用正则做匹配时 /regexp/g.exec("str") 会返回一次匹配的结果['匹配到的串', '分组', index: in, input: 'str']
+	如果带了g参数,第二次匹配时候会从上次匹配结束的地方继续执行(这个可以用来做循环匹配)
+	/reg/.test()返回是否匹配
+	'str'.search(/reg/)返回匹配的位置未匹配返回-1      (str.search(/reg/) !== -1)可以相当于test
+	对于replace可以用replace(/reg/g, 'str')达到全局替换
+	  第二个参数也可以是函数replace(/reg/g, function(match, $1, $2){})//match是匹配内容，后面是分组
+	  
+137.html的表格里面的inline-block，如果不想让被其挤得换行，可以去掉td的宽度设置，也可以在td里面写上 nowrap
+138.
