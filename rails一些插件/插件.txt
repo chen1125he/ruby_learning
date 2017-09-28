@@ -3,3 +3,4 @@
 3.stripe 支付插件
 4.devise 类似auth的插件
 5.ckeditor插件： js
+6.dotdotdot 可以把太长的文字控制成省略号，含html标签的也可以

@@ -140,7 +140,7 @@ Send_file(‘file_path’, filename: ‘filename’)
 		而直接使用事件是不能取消绑定事件的(即使是去掉用来绑定的class也不能去掉事件)，用bind的好处大概在这里吧
 	$(‘.class’).bind({event: function, event: function})
 63.对于按某个字段排序，有的条目此段为空会默认排在前面，如不想可以
-	Mysql: Order by if(isnull(column), 1, 0), column就会将空值默认置后默认里面的是 0, 1
+	Mysql: Order by if(isnull(column), 1, 0), column就会将空值默认置后(默认里面的是 0, 1)
 	Oracle: order by column nulls last/first
 64.jq选择兄弟结点 $(this).siblings() 
 	Prev() 上一个兄弟 prevAll()前面所有兄弟 next()下一个 nextAll()后面所有
@@ -473,4 +473,30 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	  第二个参数也可以是函数replace(/reg/g, function(match, $1, $2){})//match是匹配内容，后面是分组
 	  
 137.html的表格里面的inline-block，如果不想让被其挤得换行，可以去掉td的宽度设置，也可以在td里面写上 nowrap
-138.
+138.图片加载完成后获取高度什么的
+	img.onload = img.readstatechange = function(){
+		// img是js对象的图片，也可以是图片按钮
+	}
+139.如果想让某一个div有滚动条，设置一个固定的高度，然后 overflow-y: auto
+140.rails joins references includes
+	(当includes的时候)has_many会自动left out join，belongs的并且用到它的表的字段的时候才要references
+	对于left join和inner join 如果表中关联id为null，inner join的时候不会查询出此记录，若不为空，关联的对象不存在inner join和left join是一样的
+141.jq用each的时候，function()中传一个值是index，传两个值是js对象+index，在function中用$(this)表示遍历出来的jq对象
+142.ec里面有个奇怪的问题，多对多关联不上has_many会报错 uninitialize constant xxx::xxx name error
+	customer_role_emergency_news => emergency_new_customer_roles就可以
+143.ActiveRecord.create()可以直接创建记录
+	ActiveRecord.destroy_all('sql = ?', value)可以删除
+144.has_many或者belongs_to的时候，belongs_to :all_cancel_email_template, :foreign_key => :all_cancel_email_template_id, :class_name => 'MailTemplate' 
+	all_cancel_email_template实际上是MailTemplate
+	
+145.对于js中的动画效果，可以用$(selector).stop(stopAll, goToEnd)来停止，slideDown/animate等等都可以停止
+	对于下拉菜单中的动画，hover的时候显示，hout的时候消失，如果动作太快并且重复，会造成即使停下了鼠标的移动，菜单也会重复显示->隐藏->显示
+	这可以用stop(true, true),清除未完成的动画，立即完成当前动画
+146.page-break-inside:avoid;可以设置html分页点，给那附近的标签设置此css属性即可
+	在导出pdf的时候特别好用
+147.@coma.blank? && (
+      flash[:error] = I18n.t(:no_premission)
+      redirect_to restaurant_restaurant_comas_path
+      return
+      )
+	替代if
