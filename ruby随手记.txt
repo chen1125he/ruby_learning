@@ -500,3 +500,46 @@ http://blog.csdn.net/sunset108/article/details/48956101
       return
       )
 	替代if
+148.在填写表单的时候用回车提交，会触发onchange => submit,不会触发blur，点击submit的时候是onchange => blur => submit
+
+149.paranoia做假删除的时候，如果需要搜索已经删除的数据可以用Model.with_deleted.关联的数据做查询的时候，belongs_to :model, ->{unscope(where: :deleted)/with_deleted},另外查询的时候要用到distinct.joins("")手动写joins，不把deleted写进去就好了，普通的joins(:model)是会有deleted的
+150.find_each(默认batch_size是1000)和find_in_batches用于大量记录的批处理，适用于数量很大不适合一次性保存在内存中，可以处理模型类和关系
+	可以指定(:start => [, :finish => 2.0.0版本无], :batch_size => ) start按主键
+	第二个方法find_in_batches(start: , batch_size: ) do |arr|出来的是array ,
+151.查询时候，使用问号(?)而不是直接填充#{params}，可以防止注入攻击
+	rails内置针对特殊sql字符的过滤器用于转义 ', ", null和换行符
+	
+152.Time/Date/DateTime
+	Time只能使用1970年以后的日期，包括时分秒
+	Date可以使用更以前的日期但不包括时分秒 需要require "date"
+	DateTime综合了Time和Date 需要require "date"
+	
+	相互转化 Time.now.to_date.to_datetime.to_time
+	Time.new(year, month=nil, day=nil, hour=nil, min=nil, sec=nil, utc_offset=nil)
+	
+	%a - The abbreviated weekday name (``Sun'')-星期的缩写(``Sun'')
+	%A - The full weekday name (``Sunday'')-星期 (``Sunday'')
+	%b - The abbreviated month name (``Jan'')-月份的缩写 (``Jan'')
+	%B - The full month name (``January'')-月份(``January'')
+	%c - The preferred local date and time representation-本地时间的显示格式
+	%d - Day of the month (01..31)-月份中的几号(01..31)
+	%H - Hour of the day, 24-hour clock (00..23)-24小时制中的小时(00..23)
+	%I - Hour of the day, 12-hour clock (01..12)-12小时制中的小时(01..12)
+	%j - Day of the year (001..366)-一年中的第几天 (001..366)
+	%m - Month of the year (01..12)-一年中的第几个月(01..12)
+	%M - Minute of the hour (00..59)-分钟 (00..59)
+	%p - Meridian indicator (``AM'' or ``PM'')-上午还是下午(``AM'' or ``PM'')
+	%S - Second of the minute (00..60)-秒(00..60)
+	%U - Week number of the current year, starting with the first Sunday as the first day of the first week (00..53)一年中的第几个星期，从第一个星期天开始算。
+	%W - Week number of the current year, starting with the first Monday as the first day of the first week (00..53)一年中的第几个星期，从第一个星期一开始算。
+	%w - Day of the week (Sunday is 0, 0..6)一个星期中的第几天(Sunday is 0, 0..6)
+	%x - Preferred representation for the date alone, no time只显示日期，没有具体时间
+	%X - Preferred representation for the time alone, no date只显示时间，没有日期
+	%y - Year without a century (00..99)不显示年份中的前两位(00..99)
+	%Y - Year with century当前年份
+	%Z - Time zone name时间域
+
+	作者：kamionayuki
+	链接：http://www.jianshu.com/p/d89665aded19
+	來源：简书
+	著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。

@@ -1,0 +1,21 @@
+<html>
+
+  <head>
+	<script type="text/javascript" src="../jquery-2.0.0.min.js"></script> 
+	<script type="text/javascript" src="JsBarcode.all.min.js"></script> 
+  </head>
+  <body>
+	<img id="barcode" /> 
+	  <script>
+				  JsBarcode("#barcode", "0040004639100", {
+						  format:"EAN13",
+						  displayValue:true,
+						  //                fontSize:24,
+						  height:40,
+						  margin:0,
+						  //                width: 130,
+						  //                lineColor: "#0cc"
+					  });
+	  </script>
+  </body>
+  </html>

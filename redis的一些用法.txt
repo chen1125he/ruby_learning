@@ -10,3 +10,120 @@ http://blog.csdn.net/lissdy/article/details/16970111 sidekiq异步处理任务
 redis-server.exe redis.xxx.conf 可以启动服务
 config下面需要有sidekiq.yml
 然后在rails的根目录下面还要启动 bundle exec sidekiq
+	ERR Client sent AUTH, but no password is set
+	在cmd中redis-cli.exe -> redis 127.0.0.1:6379> CONFIG SET requirepass "123456"
+							redis 127.0.0.1:6379> AUTH "123456"
+	ec中的密码要和settings里面的一样，redis_queue.password
+
+http://www.cnblogs.com/M-LittleBird/p/5902850.html
+cmd进入目录
+redis-server redis.windows.conf启动
+(如果出现Creating Server TCP listening socket *:6379: bind: No such file or directory) => redis-cli.exe -> shutdown -> exit -> redis-server.exe redis.windows.conf
+设置服务命令
+redis-server --service-install redis.windows-service.conf --loglevel verbose
+卸载服务：redis-server --service-uninstall
+
+开启服务：redis-server --service-start
+
+停止服务：redis-server --service-stop
+
+class ProductUploadJob < AplicationJob
+	queue_as :myqueue
+	include Sidekiq::Status::Worker
+	
+	def perform(*args)
+		@jid = self.provider_job_id
+		self.total(total_record)
+		self.at(current_record, "message")
+		store({key: value})
+	end
+
+end
+
+controller
+
+	def fetch_import_status
+		status = Sidekiq::Status::status params[:job_id]
+		total = Sidekiq::Status::total params[:job_id]
+		at = Sidekiq::Status::at params[:job_id]
+		render json:{status: status, total: total, at: at}.as_json
+	end
+	
+	def do_import_result
+		msg_type = Sidekiq::Status::get(params[:job_id], :msg_type)
+		if msg_type == 'notice'
+			flash[:notice] = Sidekiq::Status::get(params[:job_id], :message)
+			redirect_to supplier_admin_local_products_path
+		else
+		  @error_flag = Sidekiq::Status::get(params[:job_id], :error_flag)
+		  @msg_filepath = Sidekiq::Status::get(params[:job_id], :msg_filepath)
+		  @file_name_prefix = Sidekiq::Status::get(params[:job_id], :file_name_prefix)
+		  flash[:error] = Sidekiq::Status::get(params[:job_id], :message)
+		  render :import
+		end
+	end
+	
+js
+
+	function pregress_upload(conditions_form_id, button, type){
+    var fileElementId = $(conditions_form_id + ' input[type="file"]').attr('id');
+    if($('#' + fileElementId).val() == ''){
+        toastr["error"]("ファイルを選択してください。");
+        return;
+    }
+    if(type == undefined || type == ''){
+        type = 'CSV';
+    }
+    var fetch_progress_url = $(button).data('fetch-progress-url');
+    var result_url = $(button).data('result-url');
+    Lobibox.progress({
+        title: 'お待ちください',
+        label: type + 'ファイルをインポートしています...',
+        closeButton: false,
+        closeOnEsc: false,
+        onShow: function ($this) {
+            $this.setProgress(0);
+            var already_complete = false;
+            //http://www.cnblogs.com/kissdodog/archive/2012/12/15/2819025.html
+            $.ajaxFileUpload({
+                url: $(conditions_form_id).attr('action'),
+                data: {authenticity_token: $(conditions_form_id + ' input[name="authenticity_token"]').val(), utf8: '?'},
+                secureuri: true, //是否需要安全协议
+                fileElementId: fileElementId, //文件上传域的ID
+                dataType: 'json', //返回值类型 一般设置为json
+                method: 'POST',
+                showGlobalLoading: false,
+                success: function(job_data, status) {
+                    if(job_data.error){
+                        $("a.fileupload-exists").click();
+                        $this.destroy();
+                        toastr.clear();
+                        toastr["error"](job_data.error);
+                        return;
+                    }
+                    var intervalId = setInterval(function () {
+                        $.ajax(fetch_progress_url, { dataType: 'json', showGlobalLoading: false, data: { job_id: job_data.provider_job_id } }).then(function (status_data) {
+                            if(status_data.total > 0){
+                                // console.log('at: '+status_data.at);
+                                // console.log('total: '+status_data.total);
+                                $this.setProgress(((status_data.at / status_data.total) * 100));
+                            }else{
+                                $this.setProgress(0);
+                            }
+                            if(status_data.status == 'complete' && !already_complete){
+                                already_complete = true;
+                                clearInterval(intervalId);
+                                setTimeout(function () {
+                                    // $this.destroy();
+                                    window.location.href = result_url + "?job_id=" + job_data.provider_job_id;
+                                    // $.ajax(download_url, { dataType: 'json', showGlobalLoading: false, data: { job_id: job_data.provider_job_id } }).then(function (status_data) {
+                                    // });
+                                }, 1000)
+                            }
+                        })
+                    }, 3500);
+                }
+            });
+        }
+    });
+}
