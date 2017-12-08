@@ -543,3 +543,24 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	链接：http://www.jianshu.com/p/d89665aded19
 	來源：简书
 	著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
+	
+153.在用弹窗的时候，里面如果再用有弹窗的插件，如datetimepicker或者colorpicker，可能会被遮挡住，因为弹窗可能用了overflow属性，去掉overflow又会有问题
+
+154.针对ie中readonly也会有onfocus的闪烁框，使用unselectable="on"可以解决，问题来自己its的【点击input弹出菜单可以选择】
+
+155.migrate add_column 想使用比int更小的int 可以用limit
+
+156. Could not find rake-10.0.3 in any of the sources   => bundle install --path vendor/cache
+
+157.byteslice(start_pos, len)可以按byte截取字符串
+	不过不同的编码对汉字的byte数不同，截取会有问题
+	在读取日文文件的时候File.open(path, "r:sjis:sjis") 第一个是把文件的编码输入进去，告知如何解析，第二个sjis是获取值的时候要sjis编码的值
+	
+158.要研究一下rails console的用法
+
+159.rubymine 里面的exernal libraries 用的ruby版本可以在settings里面设置 ruby sdk and gems
+
+160.rails项目出现 TypeError: 对象不支持此属性或方法
+	gemfile.lock coffee-script-source 1.8.0 => bundle update => restart
+161.在scss中，background: url()是相对路径 image-url()是绝对路径 都是相对于assets/images说的
+162.写BaseController的时候，如果admin路径下面也有个相同名的BaseController,admin下面的类继承Admin::BaseController继承的是外层的BaseController,所以不要写同名

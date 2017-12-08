@@ -1,3 +1,14 @@
+gem 'devise'
+bundle install
+rails generate devise:install -s
+	config/initializers/devise.rb
+	config/locales/devise.en.yml
+rails generate devise Model
+	model.rb
+	migrate.rb
+	route devise_for :models
+
+
 1.def create
     super do |resource|
       # owner_role = resource.owner_role
