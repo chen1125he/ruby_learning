@@ -486,7 +486,7 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	customer_role_emergency_news => emergency_new_customer_roles就可以
 143.ActiveRecord.create()可以直接创建记录
 	ActiveRecord.destroy_all('sql = ?', value)可以删除
-144.has_many或者belongs_to的时候，belongs_to :all_cancel_email_template, :foreign_key => :all_cancel_email_template_id, :class_name => 'MailTemplate' 
+144.has_many或者belongs_to的时候，belongs_to :all_cancel_email_template, :foreign_key => :all_cancel_email_template_id, :class_name => 'MailTemplate' # class_name需要区分大小写
 	all_cancel_email_template实际上是MailTemplate
 	
 145.对于js中的动画效果，可以用$(selector).stop(stopAll, goToEnd)来停止，slideDown/animate等等都可以停止
@@ -555,6 +555,7 @@ http://blog.csdn.net/sunset108/article/details/48956101
 157.byteslice(start_pos, len)可以按byte截取字符串
 	不过不同的编码对汉字的byte数不同，截取会有问题
 	在读取日文文件的时候File.open(path, "r:sjis:sjis") 第一个是把文件的编码输入进去，告知如何解析，第二个sjis是获取值的时候要sjis编码的值
+	这时候读取到的是sjis编码，做完操作之后还要做其他的操作可以转换成encoding('utf-8')
 	
 158.要研究一下rails console的用法
 
@@ -564,3 +565,66 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	gemfile.lock coffee-script-source 1.8.0 => bundle update => restart
 161.在scss中，background: url()是相对路径 image-url()是绝对路径 都是相对于assets/images说的
 162.写BaseController的时候，如果admin路径下面也有个相同名的BaseController,admin下面的类继承Admin::BaseController继承的是外层的BaseController,所以不要写同名
+163.不通过id也可以做belongs_to
+	belongs_to :purpose, foreign_key: :purpose_code, primary_key: :code, class_name: 'Purpose' # class_name 要真class，区分大小写
+164.如果想在model里面随时调用current_user
+	module SessionAdmin
+
+	  def self.included(base)
+		  base.send(:include, InstanceMethods)
+		  base.extend(ClassMethods)
+	  end
+
+	  module ClassMethods
+		def current_admin
+		  Admin.current
+		end
+		def current_admin_id
+		  current_admin.try(:id)
+		end
+	  end
+
+
+	  module InstanceMethods
+
+		def current_admin
+		  Admin.current
+		end
+
+		def current_admin_id
+		  current_admin.try(:id)
+		end
+
+	  end
+
+	end
+	
+	另外在config/initializers/xx.rb 
+	ApplicationRecord.send :include, SessionAdmin
+	
+	Admin
+	def self.current
+		Thread.current[:admin]
+	  end
+
+	  def self.current=(admin)
+		Thread.current[:admin] = admin
+	  end
+	
+165.如果想在model里面调用helper方法的话
+	include/extend ActionView::Helpers 看是类方法里面调用还是实例方法里面调用
+	
+166.CSV是直接被包含在ruby里面的, 不需要gemfile里面添加
+	导出的时候CSV.open(path, 'wb') do |csv| end
+	NKF.nkf("-sx -Lw -W -c", str) 可以解决导出的字符串编码问题
+	
+167.发送邮件 写在app/mailers里面
+	发送的方法是Model.method().deliver
+			default from: MAIL_FROM # 要设置from才能发送出去
+			mail(to: 'address'/['address', 'address'], subject: 'title', body: '')
+169.Completed 200 OK in 3620ms (Views: 3596.5ms | ActiveRecord: 8.0ms)
+	如果views的时间和completed的时间相差大的话可以考虑手动添加一个render
+	在ana的mon_calendar里面发现了这个问题，代码最后手动添加render 'mon_calendar/new'，而不是让它自动去render模板可以更快一点
+	另外是通过ajax访问产生的这个问题
+	
+170.models.group_by(|model| model.id) models.group_by(&:id)
