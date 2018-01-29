@@ -628,3 +628,9 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	另外是通过ajax访问产生的这个问题
 	
 170.models.group_by(|model| model.id) models.group_by(&:id)
+
+171.jq中的closest('div')，可能匹配得到自己的
+
+172.obj.xxx(&:yyy) == obj.xxx {|o| o.yyy}
+
+173.setTimeout 可以解决方法执行顺序的问题， setTimeout(function, 0), 有时候设置时间大一点才有效果 setTimeout(function, 20)

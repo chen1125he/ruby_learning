@@ -13,4 +13,10 @@
 			undo log是实现原子性的关键，每当执行一条sql语句对数据产生了影响，就会记录下与之相反的操作到undo log中，删除会形成insert，添加会形成delete回滚的时候会执行undo log(这里是个逻辑恢复)， 
 			同时也会记录到redo log中事务一旦被提交，就将该redo中的操作持久化到磁盘上
 	隔离性：
+		事务间不互相影响
 		脏读：读取了另一个事务中未提交的事务(rails中如果事务未提交，那么就不会记录到数据库中，可以用sleep然后搜索)
+		
+http://www.runoob.com/mysql/mysql-null.html
+mysql基础
+1.null处理
+	=null和!=null是不能查询出来的 需要is null 或者 is not null
