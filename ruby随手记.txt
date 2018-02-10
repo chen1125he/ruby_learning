@@ -622,6 +622,7 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	发送的方法是Model.method().deliver
 			default from: MAIL_FROM # 要设置from才能发送出去
 			mail(to: 'address'/['address', 'address'], subject: 'title', body: '')
+			想发送附件需要写方法attachments['file_name'] = File.read(file_path[, encoding: 'sjis'])  #其中的filename带扩展名，和实际读到的文件有练习，(invalid byte sequence in UTF-8 (ArgumentError))
 169.Completed 200 OK in 3620ms (Views: 3596.5ms | ActiveRecord: 8.0ms)
 	如果views的时间和completed的时间相差大的话可以考虑手动添加一个render
 	在ana的mon_calendar里面发现了这个问题，代码最后手动添加render 'mon_calendar/new'，而不是让它自动去render模板可以更快一点
@@ -634,3 +635,15 @@ http://blog.csdn.net/sunset108/article/details/48956101
 172.obj.xxx(&:yyy) == obj.xxx {|o| o.yyy}
 
 173.setTimeout 可以解决方法执行顺序的问题， setTimeout(function, 0), 有时候设置时间大一点才有效果 setTimeout(function, 20)
+
+174.simple_form_for 可以直接放字符串，如果没有要回显的数据或者是for @models的话
+	如 simple_form_for 'base_local_product' do |f|
+			@products.each do |product|
+				f.simple_fields_for product do |ff|
+					<%= ff.input %>
+					=> 会生成 base_local_product[product_id][:product_attr], 也可以自己指定name
+				end
+			end
+	   end
+	   
+175.

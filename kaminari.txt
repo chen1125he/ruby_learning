@@ -61,3 +61,7 @@ page(params[:page]).per(10) 主要是加了调用这两个方法
 
 
 
+7.undefined method `display_tag?' for #<Kaminari::Helpers::Paginator::PageProxy:0x0000000d4539b0>
+Did you mean?  display
+	版本过低
+	最好指定一个版本

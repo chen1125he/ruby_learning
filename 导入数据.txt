@@ -1,6 +1,6 @@
 1:在开始菜单  运行cmd
 
-2：输入 mysql -u root(这里输入user) -p(password)
+2：输入 mysql -uroot(这里输入user) -p(password)
 
 12步可以通过直接在开始菜单里面找到mysql然后运行来代替
 

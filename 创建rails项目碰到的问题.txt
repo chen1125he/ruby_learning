@@ -6,3 +6,6 @@
    
 2."Specified 'mysql2' for database adapter, but the gem is not loaded"
 	gem 'mysql2', '~> 0.3.18'
+	
+	
+3.'activesupport' 新项目加入的时候，要给它在setting中设置sdk
