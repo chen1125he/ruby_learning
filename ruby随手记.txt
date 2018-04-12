@@ -697,3 +697,22 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	<input type="password" name="password" autocomplete="new-password" />
 	这样就不会自动填充用户名和密码了
 	https://gist.github.com/runspired/b9fdf1fa74fc9fb4554418dea35718fe
+184. 跨域 The 'Access-Control-Allow-Origin' header contains multiple values '*, *', but only one is allowed
+	response.headers['Access-Control-Allow-Origin'] = '*'
+185.如果在移动设备的shadowbox中没有scrollbar的话
+	$('#sb-body-inner').css({
+						'overflow': 'scroll', 
+						'-webkit-overflow-scrolling': 'touch' 
+					});
+	}
+186.在rubymine的edit configuration中指定ip成自己的ip，别人就可以访问你的项目了
+187.$(form).serialize() 可以获取这个form的所有参数
+188.devkit需要安装在ruby中 cmd进ruby/devkit ruby dk.rb init => 修改 config.yml ruby根目录 => ruby dk.rb install 
+189.多态：同一操作作用于不同的对象可以有不同的解释产生不同的执行结果，需要继承(java还有接口)
+	继承主要是为了重用代码，节省开发时间，也可实现继承多态，通过重写方法
+	封装是用来整合一个对象的属性和方法，隐藏内部的实现细节只通过对外开放一些方法同外部进行交互
+	
+	五大基本原则: 单一职能原则，开放封闭原则(功能可扩展，但尽量不修改原来的程序，而是继承去拓展), 替换原则:子类可以替换基类父类不可以替换子类(继承的机制，子类可能会有比父类更多的方法和属性),依赖倒置原则,接口隔离原则(接口的功能尽量单一)
+190.假删除
+	paranoid, '~> 2.2'
+	acts_as_paranoid column: :deleted, sentinel_value: false
