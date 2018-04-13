@@ -716,3 +716,19 @@ http://blog.csdn.net/sunset108/article/details/48956101
 190.假删除
 	paranoid, '~> 2.2'
 	acts_as_paranoid column: :deleted, sentinel_value: false
+191.遍历csv
+	CSV.read(path, encoding: '').each
+	CSV.foreach(path, encoding(xx:xx)) do 
+	CSV.open(path, 'ab/a+')可以向其中添加行
+192.alias和alias_method的区别
+	alias :method1/method1/(不能是字符串) :method2 <=> alias_method :method1/'method1', :method2
+193.让rails默认加载lib下的文件
+	https://www.jianshu.com/p/e4446432e9cb
+	在config/application.rb
+	config.autoload_paths << Rails.root.join('lib') # 开发模式可以用, 产中环境不允许
+	cofig.eager_load_paths << [产品模式用这个]
+194.function(*args)
+	args是一个数组，*args就是多个参数了
+	def function(a = [], b)
+	function(1) => a: [], b: 1
+195.
