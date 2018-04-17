@@ -731,4 +731,9 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	args是一个数组，*args就是多个参数了
 	def function(a = [], b)
 	function(1) => a: [], b: 1
-195.
+195.如果一个类想关联两个不同类型的图片，像ec中的picture和icon
+	has_one :category_icon, ->(o) { unscope(where: :owner_type).where(owner_type: 'CategoryIcon') }, dependent: :destroy, as: :owner
+	这样可以在查询的时候，限制其 owner_type
+	new的时候，picture.owner = category	#(这个会直接赋值id和type, type和 polymorphic有关，多态)
+		这时候可以再手动修改owner_type
+	https://stackoverflow.com/questions/10083667/ruby-on-rails-has-many-define-class-name-for-polymorphic-relationship
