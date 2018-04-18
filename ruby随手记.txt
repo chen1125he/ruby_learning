@@ -621,7 +621,7 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	include/extend ActionView::Helpers 看是类方法里面调用还是实例方法里面调用
 	
 166.CSV是直接被包含在ruby里面的, 不需要gemfile里面添加
-	导出的时候CSV.open(path, 'wb') do |csv| end
+	导出的时候CSV.open(path, 'wb') do |csv| end, 设定导出文件的编码可以用CSV.open(path, 'wb:gb2312:utf-8'), 这样，保存的文件就是gb2312编码，谁在前面就是谁
 	NKF.nkf("-sx -Lw -W -c", str) 可以解决导出的字符串编码问题
 	
 167.发送邮件 写在app/mailers里面
