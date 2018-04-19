@@ -6,3 +6,5 @@ pwd显示当前路径
 cd切换路径
 
 ./update.sh包含重启服务器
+
+ana的demo项目要用root登录后切换ana账号 su - ana

@@ -1,3 +1,14 @@
+gem 'devise'
+bundle install
+rails generate devise:install -s
+	config/initializers/devise.rb
+	config/locales/devise.en.yml
+rails generate devise Model
+	model.rb
+	migrate.rb
+	route devise_for :models
+
+
 1.def create
     super do |resource|
       # owner_role = resource.owner_role
@@ -36,3 +47,48 @@
 
   # Warn on the last attempt before the account is locked.
   config.last_attempt_warning = true #倒数第二次尝试失败的提示
+  
+  # 需要验证的字段
+  # config.authentication_keys = [:email]
+  
+  # 密码重置后默认不登录
+  # config.sign_in_after_reset_password = false
+  
+ 3.
+ I18 https://github.com/plataformatec/devise/wiki/I18n
+ 设置默认文件是
+	module modulename
+		class Application < Rails::Application
+			# 其他设置 config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb, yml}').to_s]
+			config.i18n.default_locale = :ja
+		end
+	end
+ 4.上面需要验证的字段也可以在model里面配置
+	devise :authentication_keys => [:email, :status]
+	对于这些字段都需要在表单中输入, 用before_action来指定params的方式不行
+ 5.对于一些邮件模板或者views，用rails g devise:views
+	https://stackoverflow.com/questions/4276233/ruby-rails-how-do-you-customize-the-mailer-templates-of-devise
+	after_sending_reset_password_instructions_path_for(发送reset邮件后), 
+	方法应该返回一个链接而不是redirect，同样的还有登录后。。。。
+ 6.如果想在devise的controller里面定义额外的action的话
+	 devise_for :admins, controllers: {sessions: 'authorize/sessions', passwords: 'authorize/passwords'}  (原有action)
+	 devise_scope :admin do
+		get '/admins/passwords/mail_complete', to: 'authorize/passwords#mail_complete'
+	  end
+	  
+ 7.在reset_password_instructions中 <%= link_to 'Change my password', edit_password_url(@resource, reset_password_token: @token) %> 
+ edit_password_url 生成的url的默认的base_url要在
+ config/environments/development.rb 
+ config.action_mailer.default_url_options = { host: 'localhost', port: 3000 } 设置
+ http://www.korenlc.com/rails-tutorial-authentication-with-devise/
+	
+ 8.不同的用户设置不同的timeout 在model里面定义方法 def timeout_in 
+														return 1.year if admin?
+														1.days
+													end
+ 9.通过在登录页面直接添加:remember_me可以记住登录，保存到cookie里面，关闭浏览器再打开也是登录状态
+ 10.timeoutable和rememberable
+	需要在model里面添加，添加完成后可以在devise里面配置
+	config.remember_for
+	config.timeout_in
+	登录的时候未勾选remember_me，可以time_out，否则以remember_me时间为准

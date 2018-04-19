@@ -1,0 +1,56 @@
+C#连接Mysql数据库
+
+（1）用c#连接MySQL数据库需要用到mysql-connector-net，这个组件在官网可以下载； （https://dev.mysql.com/downloads/connector/net/）
+（2）在工程中引用这个组件 
+     项目->添加引用->浏览 （Alt + P + R），浏览路径为安装mysql-connector-net的路径，如我的路径为：D:\environments\MySQL Connector Net 6.10.6\Assemblies\v4.5.2
+     选择MySql.Data.dll,再确定。
+
+（3）在工程中添加：
+
+using MySql.Data.MySqlClient;
+using System.Data;
+
+
+完整例子：
+App.config :
+<configuration>
+  <appSettings>
+    <add key="SqlConnectionStr" value="Host =localhost;Database=ana_development;Username=root;Password=123456"/>
+  </appSettings>
+</configuration>
+
+
+Program.cs :
+using System;
+using System.Data;
+using System.Configuration;
+using System.Threading;
+using MySql.Data.MySqlClient;
+
+private static void TestMysql()
+        {
+            string conn_str = ConfigurationManager.AppSettings["SqlConnectionStr"].ToString();
+            MySqlConnection conn = null;
+            MySqlCommand command = null;
+
+            Console.Out.WriteLine("开始连接...");
+            conn = new MySqlConnection(conn_str);
+            conn.Open();
+            Console.Out.WriteLine("连接成功。");
+            command = conn.CreateCommand();
+            command.CommandText = "select id, admin_name from admins;";
+            command.CommandType = CommandType.Text;
+            MySqlDataReader reader = command.ExecuteReader();
+            Console.Out.WriteLine("执行sql成功。");
+
+            while (reader.Read())
+            {
+                Console.Out.WriteLine("admin.id = "+ reader[0].ToString() + ", admin.name = "+ reader[1].ToString());
+            }
+
+            reader.Close();
+            conn.Close();
+            Console.Out.WriteLine("连接关闭。");
+
+            Thread.Sleep(3000); //3秒后关闭控制台窗口
+        }

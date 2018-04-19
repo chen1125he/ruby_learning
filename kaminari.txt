@@ -49,7 +49,7 @@ cn:
 5. 在action中修改获取数据的查询方法
 
    def index
-    @posts = Post.page(params[:page]).per(10).order(:id)
+    @posts = Post.page(params[:page]).per(10).order(:id)  # per和page如果调换了使用的位置会出现undefined method per for xxx
     end
 page(params[:page]).per(10) 主要是加了调用这两个方法
 10表示一页多10条数据， params[:page]是当前的页面，这个参数由分页插件维护
@@ -61,3 +61,7 @@ page(params[:page]).per(10) 主要是加了调用这两个方法
 
 
 
+7.undefined method `display_tag?' for #<Kaminari::Helpers::Paginator::PageProxy:0x0000000d4539b0>
+Did you mean?  display
+	版本过低
+	最好指定一个版本

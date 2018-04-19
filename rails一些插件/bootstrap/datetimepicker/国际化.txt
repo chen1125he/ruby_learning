@@ -15,3 +15,9 @@ $.fn.datetimepicker.dates['cn'] = {
 language: 'cn'
 要在初始化之前引入
 还有一定要是datetimepicker，不要混成datepicker
+
+
+
+bootstrap3 的datetimepicker和之前的版本不一样
+	它的事件$(selector).on('dp.change', function(e){})
+	css也要多定制一点，不能只有dropdown

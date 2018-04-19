@@ -1,0 +1,25 @@
+1.索引
+    数据是存储在无序的数据块中
+    http://blog.csdn.net/iefreer/article/details/15815455
+	增加磁盘的占用来提高查询速度
+	要点：线性查找比无序查找速度要快，对无序字段的排序就是建立索引
+	      正常无索引会访问全表，搜索所有的数据块
+		  建了索引
+		  
+2.事务的四个特性
+	A(Automicity)C(Consistency)I(Isolation)D(Durability)
+	原子性是指一个事务内所有的sql操作是一个整体。都执行成功才算整个事务成功。如果某个时报则必须退回到执行之前的状态，执行成功的sql需要被取消
+		Innodb通过undo log和redo log来实现原子性
+			undo log是实现原子性的关键，每当执行一条sql语句对数据产生了影响，就会记录下与之相反的操作到undo log中，删除会形成insert，添加会形成delete回滚的时候会执行undo log(这里是个逻辑恢复)， 
+			同时也会记录到redo log中事务一旦被提交，就将该redo中的操作持久化到磁盘上
+	隔离性：
+		事务间不互相影响
+		脏读：读取了另一个事务中未提交的事务(rails中如果事务未提交，那么就不会记录到数据库中，可以用sleep然后搜索)
+		
+http://www.runoob.com/mysql/mysql-null.html
+mysql基础
+1.null处理
+	=null和!=null是不能查询出来的 需要is null 或者 is not null
+	
+mysql如果需要重新设置root密码，需要先把mysql服务停了
+	进入mysql/bin mysqld --skip-grant-tables => 新开dos => mysql/bin mysql => use mysql => update mysql.user set password=PASSWORD('NEW PASSWORD') where user='root'

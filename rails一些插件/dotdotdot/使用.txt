@@ -1,0 +1,18 @@
+$(".notice_switch").click(function(){
+        var $full_notice = $(this).closest(".notice_more").prev(".notice_main").find(".full_notice");
+        if($full_notice.triggerHandler("isTruncated")){
+            $full_notice.trigger("destroy");
+            $full_notice.css("height", "");
+        }else{
+            $full_notice.css("height", "20px");
+            $full_notice.dotdotdot({
+                watch: 'window'
+            });
+        }
+    });
+	
+	$full_notice.dotdotdot({
+                watch: 'window'
+            });
+			//window模式可以跟随window宽度自动调整，显示的行数通过高度控制，另外注意上面控制height的写法顺序，需要在destroy后面改height
+			http://localhost:3000/products/search?dt=2&nocar=1

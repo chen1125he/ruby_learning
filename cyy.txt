@@ -1,0 +1,11 @@
+你好，以下是你的工作帐号，以后都会用到，现在记住一下就好，有不能使用的问题请告知：
+Gmail：cyy@alpha-it-system.com 密码：cyy123456 （简单密码自行修改）
+Redmine：cyy 密码：cyy123456 （简单密码自行修改）
+Svn：cyy 密码：DCTxSVMH
+
+baidu@alpha-it-system.com/alphait123456
+
+fujikazu.a-it.jp:4005
+
+
+远程cyy/cyy123456
