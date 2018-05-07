@@ -38,3 +38,4 @@
 	# 然后可以进github上建立一个pull request
 	最后删除自己刚刚建立的分支
 	git branch -d my_branch
+	https://blog.csdn.net/u010857876/article/details/79035876
