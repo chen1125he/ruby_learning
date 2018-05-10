@@ -34,7 +34,9 @@
 	git checkout -b my_branch # 新建并切换到这个分支
 	git add xxxx
 	git commit -m ''
-	git push origine my_branch # 提交自己修改的分支
+	git push master my_branch # 提交自己修改的分支
 	# 然后可以进github上建立一个pull request
 	最后删除自己刚刚建立的分支
 	git branch -d my_branch
+	https://blog.csdn.net/u010857876/article/details/79035876
+	11
