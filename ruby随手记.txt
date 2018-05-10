@@ -744,3 +744,7 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	# Time
 	Time::DATE_FORMATS[:default] = "%d/%m/%Y %H:%M" 
 	to config/initializers/date_time.rb
+197.访问虚拟机上的网页时，资源文件的源地址都变成了localhost:3000，导致都访问不到
+	需要修改application.yml中的cdn为''，如果设置了会默认从这里去访问的，配置这个的好处是，把资源放到云上，
+	服务器就不需要太大的带宽了
+	
