@@ -1,0 +1,12 @@
+1.windows同虚拟机中的ubuntu共享文件设置
+	iso：Guest Additions，在virtualbox中可以找得到
+	在存储/控制器IDE第二IDE控制主通道中添加GuestAdditions
+	进入ubuntu会发现多了一个光盘图标 在cd /media/xxxx中可以找到添加的光盘
+	sudo ./VBoxLinuxAdditions.run
+	运行完成后ubuntu关机，在virtualbox中设置共享的文件夹，比方说ShareWithUbuntu
+	进入ubuntu
+	sudo mkdir /mnt/shared
+	sudo mount -t vboxsf SharedWithUbuntu /mnt/shared
+	现在就可以共享剪切板了
+	https://blog.csdn.net/zyxlinux888/article/details/6347229
+	
