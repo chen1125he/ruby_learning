@@ -747,4 +747,10 @@ http://blog.csdn.net/sunset108/article/details/48956101
 197.访问虚拟机上的网页时，资源文件的源地址都变成了localhost:3000，导致都访问不到
 	需要修改application.yml中的cdn为''，如果设置了会默认从这里去访问的，配置这个的好处是，把资源放到云上，
 	服务器就不需要太大的带宽了
-	
+198.360浏览器 在使用FontAwesome时可能会出现的bug
+	容器内使用FontAwesome的i标签可能受全局字体影响，i标签的高度正常，但容器显示的容器内容高度要比i标签要高，这时可以把窗口的字体设置为空
+199.https://github.com/80percent/rails-template/wiki/how-to-deploy-rails-to-ubuntu1404-with-rails-template
+	ubuntu下载rails
+	切换ruby 版本
+	rbenv local v
+200. block = ->(a, b){body}    block = &->(a, b){body}    &block = &->(a, b){body}

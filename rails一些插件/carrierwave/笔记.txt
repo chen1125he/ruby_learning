@@ -1,0 +1,21 @@
+https://github.com/carrierwaveuploader/carrierwave
+
+class AvatarUploader < CarrierWave::Uploader::Base
+  
+  def default_url(*args)
+    "/images/fallback/" + [version_name, "default.png"].compact.join('_')
+  end
+end
+
+class User < ActiveRecord::Base
+  mount_uploader :avatar, AvatarUploader
+end
+
+AvatarUploader可以再继承，写上特定的方法给自己需要的类
+
+需要一个用来存储图片文件名的字段
+
+获取时 @modal.cover_url 如果为cover字段为nil的话会异常，可以设置一个默认的url
+
+设定时用directly_cover = ''
+

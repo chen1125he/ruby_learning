@@ -47,3 +47,9 @@
 	$ ssh-keygen
 	$ # enter password => pub 生成
 	$ cat ~/.ssh/id_rsa.pub # 可以查看生成的密钥内容
+	
+6. git代码提交流程
+	先checkout 到develop, 如果是因为已经修改过了代码导致无法切换, 则先commit
+	然后git pull --rebase 获取远程代码
+	再checkout自己要提交的分支 git add . -> git rebase develop -> 解决冲突 -> git rebase --continue
+	rebase完想再提交代码的时候出现了更新被拒绝，因为当前分支落后于其对应的远程分支，这时应该在当前分支 git pull --rebase
