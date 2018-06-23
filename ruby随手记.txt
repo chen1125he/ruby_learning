@@ -754,3 +754,10 @@ http://blog.csdn.net/sunset108/article/details/48956101
 	切换ruby 版本
 	rbenv local v
 200. block = ->(a, b){body}    block = &->(a, b){body}    &block = &->(a, b){body}
+201.
+	Time.now => 服务器当前时间
+	Time.zone.now => 设定的时区的当前时间 # config/application.rb => config.time_zone = "BeiJing"
+	
+202.ubuntu查看本机公钥，cat ~/.ssh/xx.pub
+	连接产品环境console: mina production console
+	mina log查看dev的log/mina ssh

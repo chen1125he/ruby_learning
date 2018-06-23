@@ -1,0 +1,32 @@
+$("#tournament_admin_user_id, #playground_owner_id").select2({
+    theme: "bootstrap",
+    language: "zh-CN",
+    formatLoadMore: '加载中...',
+    ajax: {
+        url: "/admin/get_users",
+        dataType: "json",
+        type: "GET",
+        data: function (params) {
+            var queryParameters = {
+                name: params.term,
+                page: params.page
+            }
+            return queryParameters;
+        },
+        processResults: function (data, page) {
+          return {
+              results: $.map(data.users, function (user) {
+                  return {
+                      text: user.name,
+                      id: user.id
+                  }
+              }),
+              pagination: { more: data.more }
+          }
+        }
+    }
+});
+
+1.如果不用#id做选择器而用.class的话，可能会造成选择后不显示选中值的情况
+2.data的params中有自带的page，只要把它传过去就ok了，而且会自动拼接
+3.想要滑动到底部自动加载数据的话，需要设置pagination: {more: t/f}
